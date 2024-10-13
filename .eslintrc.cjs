@@ -15,5 +15,8 @@ module.exports = {
   },
   rules: {
     quotes: ["error", "double"],
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-explicit-any": "off",
   },
 };

@@ -15,7 +15,7 @@
               type="radio"
               name="Int"
               value="btnIntYes"
-              checked="checked"
+              :checked="status === 'checked'"
               class="form-check-input"
             /><label for="btnIntYes">&nbsp;Yes</label>
             &nbsp;&nbsp;&nbsp;
@@ -80,18 +80,16 @@
         </fieldset>
       </div>
     </div>
-    <DonationPage />
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import BallItem from "./BallItem.vue";
-import DonationPage from "./DonationPage.vue";
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   name: "HelloWorld",
   components: {
     BallItem,
-    DonationPage,
   },
   props: {
     msg: String,
@@ -101,9 +99,10 @@ export default {
       balls: [12, 23, 34, 45, 50, 13, 1],
       chips: [12, 23, 34, 45, 56, 67, 177],
       selectedDate: [new Date(), new Date()],
+      status: "checked",
     };
   },
-};
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
