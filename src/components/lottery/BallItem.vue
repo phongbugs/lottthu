@@ -4,8 +4,9 @@
     <div v-tooltip="titleChip" class="chip pointer">{{ chipNumber }}</div>
   </div>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
   name: "BallItem",
   props: {
     ballNumber: {
@@ -19,7 +20,7 @@ export default {
     color: {
       type: String,
       required: true,
-      validator: (value) => ["red", "yellow"].includes(value),
+      validator: (value: string) => ["red", "yellow"].includes(value),
     },
   },
   computed: {
@@ -30,7 +31,7 @@ export default {
       return "Số này đã xuất hiện " + this.chipNumber + " lần";
     },
   },
-};
+});
 </script>
 
 <style scoped>
