@@ -406,6 +406,14 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
+    path: "/lottery",
+    component: () => import("@/components/lottery/HelloWorld.vue"),
+    meta: {
+      pageTitle: "A Mười Vlott",
+    },
+    children: [],
+  },
+  {
     path: "/",
     component: () => import("@/layouts/AuthLayout.vue"),
     children: [
