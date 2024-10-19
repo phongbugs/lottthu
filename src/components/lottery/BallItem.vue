@@ -1,7 +1,9 @@
 <template>
   <div :class="['ball', ballColor]">
-    <span class="number">{{ ballNumber }}</span>
-    <div v-tooltip="titleChip" class="chip pointer">{{ chipNumber }}</div>
+    <span class="number fs-4">{{ ballNumber }}</span>
+    <div v-tooltip :title="titleChip" class="chip pointer">
+      {{ chipNumber }}
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -36,15 +38,14 @@ export default defineComponent({
 
 <style scoped>
 .ball {
-  width: 45px;
-  height: 45px;
+  width: 2.8125rem;
+  height: 2.8125rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 22px;
-  font-weight: bold;
+  font-weight: 500;
   position: relative;
 }
 
@@ -76,7 +77,7 @@ export default defineComponent({
   right: -3px;
   background: red;
   color: #fff;
-  padding: 3px 6px;
+  padding: 0.1075rem 0.375rem;
   border-radius: 25%;
   font-size: 9px;
   animation: flagWave 1s infinite;
