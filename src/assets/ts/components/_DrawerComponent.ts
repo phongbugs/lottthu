@@ -190,7 +190,7 @@ class DrawerComponent {
     this.shown = false;
     this._deleteOverlay();
     document.body.removeAttribute(`data-kt-drawer-${this.name}`);
-    document.body.removeAttribute(`data-kt-drawer`);
+    document.body.removeAttribute("data-kt-drawer");
     this.element.classList.remove(`${this.options.baseClass}-on`);
     if (this.toggleElement != null) {
       this.toggleElement.classList.remove("active");

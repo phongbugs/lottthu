@@ -103,9 +103,8 @@ export default defineComponent({
   },
   setup() {
     const body = ref(
-      `Writing headlines for blog posts is much science and probably cool audience. <a href="#" class="fw-bold">Learn more</a>.`
+      "Writing headlines for blog posts is much science and probably cool audience. <a href='#' class='fw-bold'>Learn more</a>."
     );
-
     return {
       body,
       getAssetPath,
