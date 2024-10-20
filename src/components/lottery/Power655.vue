@@ -1,12 +1,12 @@
 <template>
-  <div class="">
+  <div class="w-100 h-100 overflow-hidden">
     <h1>{{ msg }}</h1>
     <div class="row m-1">
       <div class="col-12 col-sm-12 col-md-6 col-lg-4 my-1">
-        <div class="input-group input-group-sm" style="min-width: 411px">
-          <span class="input-group-text fw-bold fs-5">Tùy chọn lịch sử</span>
+        <div class="input-group input-group-sm" style="min-width: 338px">
+          <span class="input-group-text fw-bold fs-7">Tùy chọn lịch sử</span>
           <div
-            class="form-check form-check-custom form-check-solid fw-semibold fs-6 boxrd flex-grow-1"
+            class="form-check form-check-custom form-check-solid fw-semibold fs-6 flex-grow-1 boxrd"
           >
             <input
               id="btnIntYes"
@@ -15,7 +15,7 @@
               value="btnIntYes"
               :checked="status === 'checked'"
               class="form-check-input"
-            /><label for="btnIntYes">&nbsp;Kỳ Quay</label>
+            /><label class="fs-7" for="btnIntYes">&nbsp;&nbsp;Kỳ Quay</label>
             &nbsp;&nbsp;&nbsp;
             <input
               id="btnIntNo"
@@ -23,14 +23,23 @@
               name="Int"
               value="btnIntNo"
               class="form-check-input"
-            /><label for="btnIntNo">&nbsp;Ngày tháng</label>
+            /><label class="fs-7" for="btnIntNo">&nbsp;&nbsp;Ngày tháng</label>
           </div>
         </div>
       </div>
-      <div class="col-12 col-sm-11 col-md-5 col-lg-3 my-1">
-        <el-date-picker
-          class="w-100 form-control form-control-sm"
+      <div
+        class="col-10 col-sm-11 col-md-5 col-lg-3 my-1 d-flex align-items-center"
+      >
+        <!-- <el-date-picker
+          class="w-100"
           v-model="selectedDate"
+          placeholder="Từ ngày"
+          format="DD-MM-YYYY"
+          size=""
+        /> -->
+        <DateRangePicker
+          class="w-100"
+          v-model:parentValue="selectedDate"
           type="daterange"
           range-separator="Đến"
           start-placeholder="Từ ngày"
@@ -38,7 +47,7 @@
           format="DD-MM-YYYY"
         />
       </div>
-      <div class="col-12 col-sm-1 col-md-1 col-lg-1 my-1">
+      <div class="col-2 col-sm-1 col-md-1 col-lg-1 my-1">
         <!-- <el-button class="w-100" type="primary"
           ><i class="bi bi-search"></i
         ></el-button> -->
@@ -46,14 +55,12 @@
           type="button"
           class="btn btn-sm btn-primary w-100 justify-content-end fw-bold"
         >
-          <!-- Tìm kiếm
-          <i class="bi bi-search"></i> -->
           <i class="bi bi-search"></i>
           <!-- <i class="ki-outline ki-profile-circle fs-3"></i> -->
         </button>
       </div>
     </div>
-    <div class="row m-1">
+    <div class="row m-1 d-none">
       <div class="col-12 col-md-6 col-lg-4 my-1">
         <fieldset class="border rounded-2 p-5">
           <legend class="float-none reset">
@@ -71,7 +78,7 @@
         </fieldset>
       </div>
     </div>
-    <div class="row m-1">
+    <div class="row m-1 d-none">
       <div class="col-12 col-md-6 col-lg-4 my-1">
         <fieldset class="border rounded-3 p-3">
           <legend class="float-none reset">
@@ -94,11 +101,13 @@
 
 <script lang="ts">
 import BallItem from "./BallItem.vue";
+import DateRangePicker from "./DateRangePicker.vue";
 import { defineComponent } from "vue";
 export default defineComponent({
-  name: "HelloWorld",
+  name: "Power-655",
   components: {
     BallItem,
+    DateRangePicker,
   },
   props: {
     msg: String,
@@ -144,6 +153,6 @@ a {
 .boxrd {
   border-radius: 0 0.475rem 0.475rem 0 !important;
   padding: 3px 15px;
-  border: 1px solid #eee;
+  border: 1px solid var(--bs-gray-300);
 }
 </style>

@@ -407,7 +407,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/lottery",
-    component: () => import("@/components/lottery/HelloWorld.vue"),
+    component: () => import("@/components/lottery/Power655.vue"),
     meta: {
       pageTitle: "A Mười Vlott",
     },
