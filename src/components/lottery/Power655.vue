@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 h-100 overflow-hidden">
+  <div class="w-100">
     <h1>{{ msg }}</h1>
     <div class="row m-1">
       <div class="col-12 col-sm-12 col-md-6 col-lg-4 my-1">
@@ -30,13 +30,6 @@
       <div
         class="col-10 col-sm-11 col-md-5 col-lg-3 my-1 d-flex align-items-center"
       >
-        <!-- <el-date-picker
-          class="w-100"
-          v-model="selectedDate"
-          placeholder="Từ ngày"
-          format="DD-MM-YYYY"
-          size=""
-        /> -->
         <DateRangePicker
           class="w-100"
           v-model:parentValue="selectedDate"
@@ -48,66 +41,54 @@
         />
       </div>
       <div class="col-2 col-sm-1 col-md-1 col-lg-1 my-1">
-        <!-- <el-button class="w-100" type="primary"
-          ><i class="bi bi-search"></i
-        ></el-button> -->
         <button
           type="button"
           class="btn btn-sm btn-primary w-100 justify-content-end fw-bold"
         >
           <i class="bi bi-search"></i>
-          <!-- <i class="ki-outline ki-profile-circle fs-3"></i> -->
         </button>
       </div>
     </div>
-    <div class="row m-1 d-none">
+    <div class="row m-1 d-flex">
       <div class="col-12 col-md-6 col-lg-4 my-1">
-        <fieldset class="border rounded-2 p-5">
-          <legend class="float-none reset">
-            <span class="fw-bold fs-5">Kết quả sổ gần nhất</span>
-          </legend>
-          <div class="d-flex justify-content-between">
-            <BallItem
-              v-for="(ball, index) in balls"
-              :key="ball"
-              :ball-number="ball"
-              :chip-number="chips[index]"
-              :color="index === balls.length - 1 ? 'red' : 'yellow'"
-            />
-          </div>
-        </fieldset>
+        <ListBallNumber
+          legend="Kết quả quay 10-10-2024"
+          :balls="balls"
+          :chips="chips"
+        ></ListBallNumber>
+        <div class="m-1 p-1" style="overflow-y: scroll; background-color: #eee">
+          <ListBallNumber
+            v-for="(result, index) in listBalls"
+            :key="index"
+            class="my-1 overflow-scroll"
+            :legend="`Kết quả quay ${result.date}`"
+            :balls="result.balls"
+            :chips="result.chips"
+          ></ListBallNumber>
+        </div>
       </div>
     </div>
-    <div class="row m-1 d-none">
+    <div class="row m-1">
       <div class="col-12 col-md-6 col-lg-4 my-1">
-        <fieldset class="border rounded-3 p-3">
-          <legend class="float-none reset">
-            <span class="fw-bold fs-5">Chiến lược chọn số</span>
-          </legend>
-          <div class="d-flex justify-content-between">
-            <BallItem
-              v-for="(ball, index) in balls"
-              :key="ball"
-              :ball-number="ball"
-              :chip-number="chips[index]"
-              :color="index === balls.length - 1 ? 'red' : 'yellow'"
-            />
-          </div>
-        </fieldset>
+        <ListBallNumber
+          legend="Chiến lược chọn số"
+          :balls="balls"
+          :chips="chips"
+        ></ListBallNumber>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import BallItem from "./BallItem.vue";
 import DateRangePicker from "./DateRangePicker.vue";
+import ListBallNumber from "./ListBallNumber.vue";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "Power-655",
   components: {
-    BallItem,
     DateRangePicker,
+    ListBallNumber,
   },
   props: {
     msg: String,
@@ -115,6 +96,29 @@ export default defineComponent({
   data() {
     return {
       balls: [12, 23, 34, 45, 50, 13, 1],
+      listBalls: [
+        {
+          date: "10-10-2023",
+          balls: [5, 12, 23, 34, 45, 56, 11],
+          chips: [1, 2, 3, 4, 5, 6, 7, 111],
+        },
+        {
+          date: "11-10-2023",
+          balls: [6, 13, 24, 35, 46, 57, 7],
+          chips: [8, 9, 10, 11, 12, 13, 14, 65],
+        },
+        ...Array.from({ length: 50 }, (_, i) => ({
+          date: "12-10-2023",
+          balls: Array.from(
+            { length: 7 },
+            () => Math.floor(Math.random() * 59) + 1
+          ),
+          chips: Array.from(
+            { length: 7 },
+            () => Math.floor(Math.random() * 200) + 1
+          ),
+        })),
+      ],
       chips: [12, 23, 34, 45, 56, 67, 177],
       selectedDate: [new Date(), new Date()],
       status: "checked",
