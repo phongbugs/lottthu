@@ -17,7 +17,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 3000,
   },
   server: {
-    host: "0.0.0.0", // Listen on all network interfaces
-    port: 5173, // Explicitly specify the port
+    host: "0.0.0.0",
+    port: 5173,
   },
 });

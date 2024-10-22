@@ -4,7 +4,9 @@
     <div class="row m-1">
       <div class="col-12 col-sm-12 col-md-6 col-lg-4 my-1">
         <div class="input-group input-group-sm" style="min-width: 338px">
-          <span class="input-group-text fw-bold fs-7">Tùy chọn lịch sử</span>
+          <span class="input-group-text fw-bold fs-7">
+            {{ translate("historyDrawOption") }}</span
+          >
           <div
             class="form-check form-check-custom form-check-solid fw-semibold fs-6 flex-grow-1 boxrd"
           >
@@ -15,7 +17,9 @@
               value="btnIntYes"
               :checked="status === 'checked'"
               class="form-check-input"
-            /><label class="fs-7" for="btnIntYes">&nbsp;&nbsp;Kỳ Quay</label>
+            /><label class="fs-7" for="btnIntYes"
+              >&nbsp;&nbsp;{{ translate("historyDrawByPeriod") }}</label
+            >
             &nbsp;&nbsp;&nbsp;
             <input
               id="btnIntNo"
@@ -23,7 +27,9 @@
               name="Int"
               value="btnIntNo"
               class="form-check-input"
-            /><label class="fs-7" for="btnIntNo">&nbsp;&nbsp;Ngày tháng</label>
+            /><label class="fs-7" for="btnIntNo"
+              >&nbsp;&nbsp;{{ translate("historyDrawByDate") }}</label
+            >
           </div>
         </div>
       </div>
@@ -84,6 +90,7 @@
 import DateRangePicker from "./DateRangePicker.vue";
 import ListBallNumber from "./ListBallNumber.vue";
 import { defineComponent } from "vue";
+import { useI18n } from "vue-i18n";
 export default defineComponent({
   name: "Power-655",
   components: {
@@ -93,8 +100,18 @@ export default defineComponent({
   props: {
     msg: String,
   },
-  data() {
+  setup() {
+    const { t, te } = useI18n();
+    const translate = (text: string) => {
+      if (te(text)) {
+        return t(text);
+      } else {
+        return text;
+      }
+    };
+
     return {
+      translate,
       balls: [12, 23, 34, 45, 50, 13, 1],
       listBalls: [
         {
