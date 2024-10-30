@@ -2,8 +2,8 @@
   <div class="w-100">
     <h1>{{ msg }}</h1>
     <div class="row m-1">
-      <div class="col-12 col-sm-12 col-md-6 col-lg-4 my-1">
-        <div class="input-group input-group-sm" style="min-width: 338px">
+      <div class="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-4 col-xxl-3 my-1">
+        <div class="input-group input-group-sm" style="min-width: 313px">
           <span class="input-group-text fw-bold fs-7">
             {{ translate("historyDrawOption") }}</span
           >
@@ -15,8 +15,9 @@
               type="radio"
               name="Int"
               value="btnIntYes"
-              :checked="status === 'checked'"
+              :checked="isPeriodSelected"
               class="form-check-input"
+              @click="toggleSelection(true)"
             /><label class="fs-7" for="btnIntYes"
               >&nbsp;&nbsp;{{ translate("historyDrawByPeriod") }}</label
             >
@@ -26,7 +27,9 @@
               type="radio"
               name="Int"
               value="btnIntNo"
+              :checked="!isPeriodSelected"
               class="form-check-input"
+              @click="toggleSelection(false)"
             /><label class="fs-7" for="btnIntNo"
               >&nbsp;&nbsp;{{ translate("historyDrawByDate") }}</label
             >
@@ -34,28 +37,41 @@
         </div>
       </div>
       <div
-        class="col-10 col-sm-11 col-md-5 col-lg-3 my-1 d-flex align-items-center"
+        v-if="!isPeriodSelected"
+        class="col-10 col-sm-11 col-md-5 col-lg-4 col-xl-3 col-xxl-2 my-1 d-flex align-items-center"
       >
         <DateRangePicker
           class="w-100"
           v-model:parentValue="selectedDate"
           type="daterange"
-          range-separator="Đến"
-          start-placeholder="Từ ngày"
-          end-placeholder="Đến ngày"
+          :range-separator="translate('datePickerRangeSeparator')"
+          :start-placeholder="translate('datePickerStartPlaceholder')"
+          :end-placeholder="translate('datePickerEndPlaceholder')"
           format="DD-MM-YYYY"
         />
       </div>
-      <div class="col-2 col-sm-1 col-md-1 col-lg-1 my-1">
-        <button
-          type="button"
+      <div
+        v-else
+        class="col-10 col-sm-11 col-md-5 col-lg-4 col-xl-3 col-xxl-2 my-1 d-flex align-items-center"
+      >
+        <el-select v-model="drawPeriodValue" placeholder="Select">
+          <el-option
+            v-for="item in drawPeriodOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </div>
+      <div class="col-2 col-sm-1 col-md-1 col-lg-1 col-xl-1 my-1">
+        <el-button
           class="btn btn-sm btn-primary w-100 justify-content-end fw-bold"
-        >
-          <i class="bi bi-search"></i>
-        </button>
+          type="primary"
+          ><i class="bi bi-search"></i
+        ></el-button>
       </div>
     </div>
-    <div class="row m-1 d-flex">
+    <div class="row m-1 d-none">
       <div class="col-12 col-md-6 col-lg-4 my-1">
         <ListBallNumber
           legend="Kết quả quay 10-10-2024"
@@ -74,7 +90,7 @@
         </div>
       </div>
     </div>
-    <div class="row m-1">
+    <div class="row m-1 d-none">
       <div class="col-12 col-md-6 col-lg-4 my-1">
         <ListBallNumber
           legend="Chiến lược chọn số"
@@ -89,7 +105,7 @@
 <script lang="ts">
 import DateRangePicker from "./DateRangePicker.vue";
 import ListBallNumber from "./ListBallNumber.vue";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useI18n } from "vue-i18n";
 export default defineComponent({
   name: "Power-655",
@@ -110,6 +126,19 @@ export default defineComponent({
       }
     };
 
+    const drawPeriodOptions = [
+      5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95,
+      100,
+    ].map((item) => ({
+      value: item,
+      label: `${item} ${translate("lastestDrawPeriods")}`,
+    }));
+    const drawPeriodValue = ref(drawPeriodOptions[0].value);
+    const isPeriodSelected = ref(true);
+
+    function toggleSelection(isPeriod) {
+      isPeriodSelected.value = isPeriod;
+    }
     return {
       translate,
       balls: [12, 23, 34, 45, 50, 13, 1],
@@ -138,7 +167,10 @@ export default defineComponent({
       ],
       chips: [12, 23, 34, 45, 56, 67, 177],
       selectedDate: [new Date(), new Date()],
-      status: "checked",
+      drawPeriodOptions,
+      drawPeriodValue,
+      isPeriodSelected,
+      toggleSelection,
     };
   },
 });
