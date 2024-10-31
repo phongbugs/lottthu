@@ -3,17 +3,20 @@
     <el-date-picker
       v-model="localValue"
       type="daterange"
-      range-separator="Đến"
-      start-placeholder="Từ ngày"
-      end-placeholder="Đến ngày"
+      :range-separator="t('datePickerRangeSeparator')"
+      :start-placeholder="t('datePickerStartPlaceholder')"
+      :end-placeholder="t('datePickerEndPlaceholder')"
       @update:model-value="emitValue"
       format="DD-MM-YYYY"
     />
   </el-form-item>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { t } from "@/core/helpers/i18n";
+import { defineComponent } from "vue";
+export default defineComponent({
+  name: "DateRangePicker",
   props: {
     // Receiving the value (date range) from the parent component
     parentValue: {
@@ -25,6 +28,7 @@ export default {
     return {
       // Internal local value synced with parentValue
       localValue: this.parentValue,
+      t,
     };
   },
   watch: {
@@ -42,7 +46,7 @@ export default {
       this.$emit("update:parentValue", newVal);
     },
   },
-};
+});
 </script>
 <style>
 /* Custom styles for mobile devices */
