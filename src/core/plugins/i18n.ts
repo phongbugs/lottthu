@@ -1,6 +1,4 @@
 import { createI18n } from "vue-i18n";
-import { date } from "yup";
-
 const messages = {
   es: {
     dashboard: "Tablero",

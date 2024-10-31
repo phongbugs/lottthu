@@ -5,7 +5,7 @@
       <div class="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-4 col-xxl-3 my-1">
         <div class="input-group input-group-sm" style="min-width: 313px">
           <span class="input-group-text fw-bold fs-7">
-            {{ translate("historyDrawOption") }}</span
+            {{ t("historyDrawOption") }}</span
           >
           <div
             class="form-check form-check-custom form-check-solid fw-semibold fs-6 flex-grow-1 boxrd"
@@ -19,7 +19,7 @@
               class="form-check-input"
               @click="toggleSelection(true)"
             /><label class="fs-7" for="btnIntYes"
-              >&nbsp;&nbsp;{{ translate("historyDrawByPeriod") }}</label
+              >&nbsp;&nbsp;{{ t("historyDrawByPeriod") }}</label
             >
             &nbsp;&nbsp;&nbsp;
             <input
@@ -31,7 +31,7 @@
               class="form-check-input"
               @click="toggleSelection(false)"
             /><label class="fs-7" for="btnIntNo"
-              >&nbsp;&nbsp;{{ translate("historyDrawByDate") }}</label
+              >&nbsp;&nbsp;{{ t("historyDrawByDate") }}</label
             >
           </div>
         </div>
@@ -40,28 +40,13 @@
         v-if="!isPeriodSelected"
         class="col-10 col-sm-11 col-md-5 col-lg-4 col-xl-3 col-xxl-2 my-1 d-flex align-items-center"
       >
-        <DateRangePicker
-          class="w-100"
-          v-model:parentValue="selectedDate"
-          type="daterange"
-          :range-separator="translate('datePickerRangeSeparator')"
-          :start-placeholder="translate('datePickerStartPlaceholder')"
-          :end-placeholder="translate('datePickerEndPlaceholder')"
-          format="DD-MM-YYYY"
-        />
+        <DateRangePicker v-model:parentValue="selectedDate" />
       </div>
       <div
         v-else
         class="col-10 col-sm-11 col-md-5 col-lg-4 col-xl-3 col-xxl-2 my-1 d-flex align-items-center"
       >
-        <el-select v-model="drawPeriodValue" placeholder="Select">
-          <el-option
-            v-for="item in drawPeriodOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
+        <DrawPeriodSelect></DrawPeriodSelect>
       </div>
       <div class="col-2 col-sm-1 col-md-1 col-lg-1 col-xl-1 my-1">
         <el-button
@@ -104,43 +89,28 @@
 
 <script lang="ts">
 import DateRangePicker from "./DateRangePicker.vue";
+import DrawPeriodSelect from "./DrawPeriodSelect.vue";
 import ListBallNumber from "./ListBallNumber.vue";
 import { defineComponent, ref } from "vue";
-import { useI18n } from "vue-i18n";
+import { t } from "@/core/helpers/i18n";
 export default defineComponent({
   name: "Power-655",
   components: {
     DateRangePicker,
     ListBallNumber,
+    DrawPeriodSelect,
   },
   props: {
     msg: String,
   },
   setup() {
-    const { t, te } = useI18n();
-    const translate = (text: string) => {
-      if (te(text)) {
-        return t(text);
-      } else {
-        return text;
-      }
-    };
-
-    const drawPeriodOptions = [
-      5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95,
-      100,
-    ].map((item) => ({
-      value: item,
-      label: `${item} ${translate("lastestDrawPeriods")}`,
-    }));
-    const drawPeriodValue = ref(drawPeriodOptions[0].value);
     const isPeriodSelected = ref(true);
 
     function toggleSelection(isPeriod) {
       isPeriodSelected.value = isPeriod;
     }
     return {
-      translate,
+      t,
       balls: [12, 23, 34, 45, 50, 13, 1],
       listBalls: [
         {
@@ -167,8 +137,6 @@ export default defineComponent({
       ],
       chips: [12, 23, 34, 45, 56, 67, 177],
       selectedDate: [new Date(), new Date()],
-      drawPeriodOptions,
-      drawPeriodValue,
       isPeriodSelected,
       toggleSelection,
     };
