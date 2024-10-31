@@ -15,3 +15,13 @@ npm install --save-dev @types/node @types/express @types/body-parser @types/cors
 npm install sequelize sequelize-typescript pg pg-hstore
 npm install --save-dev @types/sequelize
 ```
+## 3.1 Install Sequelize cli 
+```
+npm install sequelize sequelize-typescript
+npm install --save-dev sequelize-cli
+```
+
+## 3.2 Init Sequelize Project
+```
+npx sequelize-cli init
+```
