@@ -25,9 +25,11 @@
     "typescript": "^5.6.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.1.0",
     "@types/body-parser": "^1.19.5",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/faker": "^6.6.11",
     "@types/node": "^22.8.5",
     "@types/sequelize": "^4.28.20",
     "sequelize-cli": "^6.6.2",

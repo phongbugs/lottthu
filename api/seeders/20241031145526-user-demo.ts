@@ -1,5 +1,5 @@
 import { QueryInterface } from "sequelize";
-const faker = require("faker");
+import { faker } from "@faker-js/faker";
 
 ("use strict");
 
@@ -10,20 +10,23 @@ module.exports = {
       "Users",
       [
         {
-          name: faker.name.findName(),
+          username: faker.person.firstName(),
           email: faker.internet.email(),
+          passwordHash: faker.internet.password(),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          name: faker.name.findName(),
+          username: faker.person.firstName(),
           email: faker.internet.email(),
+          passwordHash: faker.internet.password(),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          name: faker.name.findName(),
+          username: faker.person.firstName(),
           email: faker.internet.email(),
+          passwordHash: faker.internet.password(),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
