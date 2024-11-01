@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES2017",
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
@@ -8,6 +8,11 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist"
   },
-  "include": ["src/**/*.ts"],
+  "include": [
+    "src/**/*.ts",  
+    "models/**/*.ts", 
+    "migrations/**/*.ts",
+    "seeders/**/*.ts" 
+    ],
   "exclude": ["node_modules", "dist"]
 }
