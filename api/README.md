@@ -25,3 +25,9 @@ npm install --save-dev sequelize-cli
 ```
 npx sequelize-cli init
 ```
+
+# 4. Setup for migration, Seed by sequeslize-cli with typescript
+
+1. Build .ts to .js on /dist
+2. Config sequelize-cli use .js file /dist on ```.sequelizerc``` file
+3. Run some sequelize statements : migrate, seed
