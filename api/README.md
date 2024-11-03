@@ -9,25 +9,26 @@ npm install typescript ts-node express body-parser cors dotenv
 npm install --save-dev @types/node @types/express @types/body-parser @types/cors
 ```
 
-# 3 Install Sequelize and Database Driver
+# 3 Install Prisma and Database Driver
 
 ```
-npm install sequelize sequelize-typescript pg pg-hstore
-npm install --save-dev @types/sequelize
-```
-## 3.1 Install Sequelize cli 
-```
-npm install sequelize sequelize-typescript
-npm install --save-dev sequelize-cli
+npm install prisma @prisma/client mysql2
+npx prisma init
 ```
 
-## 3.2 Init Sequelize Project
+# 3.1 Migration with Prisma
 ```
-npx sequelize-cli init
+npx prisma migrate dev --name init
 ```
-
-# 4. Setup for migration, Seed by sequeslize-cli with typescript
-
-1. Build .ts to .js on /dist
-2. Config sequelize-cli use .js file /dist on ```.sequelizerc``` file
-3. Run some sequelize statements : migrate, seed
+# 3.2 Seed with Prisma 
+Create /seed.ts manualy
+Add this one to package.json
+```"
+prisma": {
+    "seed": "ts-node prisma\\seed.ts"
+}
+```
+then run this cli statement
+```
+npx prisma db seed
+```
