@@ -11,9 +11,6 @@
   },
   "include": [
     "src/**/*.ts",  
-    "models/**/*.ts", 
-    "migrations/**/*.ts",
-    "seeders/**/*.ts" 
     ],
   "exclude": ["node_modules", "dist"]
 }
