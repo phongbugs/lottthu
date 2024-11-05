@@ -1,60 +1,63 @@
-// userController.ts
-import { Request, Response } from "express";
 import { PrismaClient, User as PrismaUser } from "@prisma/client";
+import {
+  Get,
+  Route,
+  Tags,
+  Path,
+  Post,
+  Body,
+  Controller,
+  Response,
+  SuccessResponse,
+} from "tsoa";
+
 const prisma = new PrismaClient();
 
-export const getUsers = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const users: PrismaUser[] = await prisma.user.findMany();
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ error: "Something went wrong" });
-  }
-};
-
-export const getUserById = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { id } = req.params; // Lấy ID từ path parameter
-
-  if (!id || isNaN(Number(id))) {
-    res.status(400).json({ error: "Invalid ID" }); // Kiểm tra xem ID có hợp lệ không
+@Route("users")
+@Tags("User")
+export class UserController extends Controller {
+  @Get("/")
+  public async getUsers(): Promise<PrismaUser[]> {
+    return await prisma.user.findMany();
   }
 
-  try {
-    const user: PrismaUser | null = await prisma.user.findUnique({
-      where: { id: Number(id) }, // Chuyển đổi ID thành số
+  @Get("{id}")
+  @Response<null>(404, "User not found")
+  public async getUserById(@Path() id: number): Promise<PrismaUser | null> {
+    const user = await prisma.user.findUnique({
+      where: { id },
     });
 
     if (!user) {
-      res.status(404).json({ error: "User not found" });
+      this.setStatus(404);
+      return null;
     }
 
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ error: "Something went wrong" });
+    return user;
   }
-};
 
-export const createUser = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { username, fullname, hashPwd, email, phone } = req.body;
-
-  try {
-    const newUser: PrismaUser = await prisma.user.create({
+  @Post("/")
+  @SuccessResponse("201", "User created")
+  public async createUser(
+    @Body()
+    body: {
+      username: string;
+      fullname: string;
+      hashPwd: string;
+      email: string;
+      phone: string;
+    }
+  ): Promise<{ message: string; user: PrismaUser }> {
+    const newUser = await prisma.user.create({
       data: {
-        username,
-        fullname,
-        hashPwd,
-        email,
-        phone,
+        username: body.username,
+        fullname: body.fullname,
+        hashPwd: body.hashPwd,
+        email: body.email,
+        phone: body.phone,
       },
     });
-    res.status(201).json({ message: "User created", user: newUser });
-  } catch (error) {
-    res.status(500).json({ error: "Something went wrong" });
+    this.setStatus(201);
+    return { message: "User created", user: newUser };
   }
-};
+}
