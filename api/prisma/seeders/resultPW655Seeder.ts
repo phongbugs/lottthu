@@ -107,7 +107,7 @@ async function convertResultPW655HTMLToModelData(
     const date = dateT.split(",")[1].trim();
     const numbers = element
       .find("td:nth-child(2) span.home-mini-whiteball")
-      .map((i, el) => $(el).text())
+      .map((_i, el) => $(el).text())
       .get();
     const jackpot1 = element
       .find("td:nth-child(3)")
