@@ -49,7 +49,7 @@ export class Power655Controller extends Controller {
   }
   @Post("/sync-result/{lastDrawId}")
   @SuccessResponse("201", "Sync latest result from 3rd party")
-  public async syncResultFrom3rdParty(
+  public async syncResultAllFrom3rdParty(
     @Path() lastDrawId: number
   ): Promise<Power655Draw[] | null> {
     const handler = new DrawPower655Handler();

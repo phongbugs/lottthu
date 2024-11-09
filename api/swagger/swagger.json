@@ -371,7 +371,7 @@
 		},
 		"/power655/sync-result/{lastDrawId}": {
 			"post": {
-				"operationId": "SyncResultFrom3rdParty",
+				"operationId": "SyncResultAllFrom3rdParty",
 				"responses": {
 					"201": {
 						"description": "Sync latest result from 3rd party",

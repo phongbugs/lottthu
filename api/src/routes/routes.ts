@@ -290,9 +290,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/api/power655/sync-result/:lastDrawId',
             ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
-            ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.syncResultFrom3rdParty)),
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.syncResultAllFrom3rdParty)),
 
-            async function Power655Controller_syncResultFrom3rdParty(request: ExRequest, response: ExResponse, next: any) {
+            async function Power655Controller_syncResultAllFrom3rdParty(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     lastDrawId: {"in":"path","name":"lastDrawId","required":true,"dataType":"double"},
             };
@@ -306,7 +306,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new Power655Controller();
 
               await templateService.apiHandler({
-                methodName: 'syncResultFrom3rdParty',
+                methodName: 'syncResultAllFrom3rdParty',
                 controller,
                 response,
                 next,
