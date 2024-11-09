@@ -1,11 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import userSeeder from "./seeders/userSeeder";
-import resultPW655Seeder from "./seeders/resultPW655Seeder";
 const prisma = new PrismaClient();
 
 async function main() {
   await userSeeder(prisma);
-  await resultPW655Seeder(prisma);
+  //await resultPW655Seeder(prisma);
 }
 
 main()

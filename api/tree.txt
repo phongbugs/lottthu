@@ -1,0 +1,46 @@
+﻿Folder PATH listing for volume DT
+Volume serial number is D406-B6CA
+H:.
+|   .env
+|   .eslintignore
+|   .gitignore
+|   directory_structure.txt
+|   package-lock.json
+|   package.json
+|   README.md
+|   tree.txt
+|   tsconfig.json
+|   tsoa.json
++---prisma
+|   |   schema.prisma
+|   |   seed.ts
+|   |   
+|   +---migrations
+|   |   |   migration_lock.toml
+|   |   |   
+|   |   +---20241103075426_init_db
+|   |   |       migration.sql
+|   |   |       
+|   |   \---20241103155116_init_db
+|   \---seeders
+|           pw655.history.html
+|           resultPW655Seeder.ts
+|           userSeeder.ts
+|           
++---src
+|   |   index.ts
+|   |   
+|   +---controllers
+|   |       Power655Controller.ts
+|   |       RootController.ts
+|   |       UserController.ts
+|   |       
+|   +---middlewares
+|   +---models
+|   +---routes
+|   |       routes.ts
+|   |       
+|   \---utils
+\---swagger
+        swagger.json
+        

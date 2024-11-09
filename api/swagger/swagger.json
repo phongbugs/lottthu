@@ -52,6 +52,48 @@
 			"PrismaUser": {
 				"$ref": "#/components/schemas/DefaultSelection_Prisma._36_UserPayload_",
 				"description": "Model User"
+			},
+			"DefaultSelection_Prisma._36_Power655DrawPayload_": {
+				"properties": {
+					"jackpot2": {
+						"type": "string"
+					},
+					"jackpot1": {
+						"type": "string"
+					},
+					"wns": {
+						"type": "string"
+					},
+					"drawId": {
+						"type": "number",
+						"format": "double"
+					},
+					"date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"t": {
+						"type": "string"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"jackpot2",
+					"jackpot1",
+					"wns",
+					"drawId",
+					"date",
+					"t",
+					"id"
+				],
+				"type": "object"
+			},
+			"Power655Draw": {
+				"$ref": "#/components/schemas/DefaultSelection_Prisma._36_Power655DrawPayload_",
+				"description": "Model Power655Draw"
 			}
 		},
 		"securitySchemes": {}
@@ -225,6 +267,142 @@
 				},
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/power655": {
+			"get": {
+				"operationId": "WelcomeMessage",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Power655"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/power655/get-result-all": {
+			"get": {
+				"operationId": "GetResultAll",
+				"responses": {
+					"200": {
+						"description": "Get latest result from database",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Power655Draw"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Power655"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/power655/drop-result-all": {
+			"delete": {
+				"operationId": "DropResultAll",
+				"responses": {
+					"200": {
+						"description": "All results deleted successfully"
+					}
+				},
+				"description": "Deletes all records from the Power655Draw table.\nThis operation will permanently remove all draw results from the database.",
+				"summary": "Delete all Power655 draw results",
+				"tags": [
+					"Power655"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/power655/get-result/{lastDrawId}": {
+			"get": {
+				"operationId": "GetResultFrom3rdParty",
+				"responses": {
+					"200": {
+						"description": "Get latest result from 3rd party",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Power655Draw"
+									},
+									"type": "array",
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Power655"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "lastDrawId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/power655/sync-result/{lastDrawId}": {
+			"post": {
+				"operationId": "SyncResultFrom3rdParty",
+				"responses": {
+					"201": {
+						"description": "Sync latest result from 3rd party",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Power655Draw"
+									},
+									"type": "array",
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Power655"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "lastDrawId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
 			}
 		}
 	},

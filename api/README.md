@@ -16,11 +16,11 @@ npm install prisma @prisma/client mysql2
 npx prisma init
 ```
 
-# 3.1 Migration with Prisma
+## 3.1 Migration with Prisma
 ```
 npx prisma migrate dev --name init
 ```
-# 3.2 Seed with Prisma 
+## 3.2 Seed with Prisma 
 Create /seed.ts manualy
 Add this one to package.json
 ```"
@@ -31,6 +31,11 @@ prisma": {
 then run this cli statement
 ```
 npx prisma db seed
+```
+
+## 3.3 Generate model from ```/scheme.prisma``` to PrismaClient (typescript class...)
+```
+npx prisma generate
 ```
 
 # 4. Generate API Documentation Automatically with TSOA, Prisma and Swagger-UI-Express
@@ -197,3 +202,8 @@ RegisterRoutes(app);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 ```
 
+
+# TIPs
+- list and write struct folders and files :
+  - exclude node_module  ```tree /F /A /I | findstr /V "node_modules" > directory_structure.txt```
+  - exclude many folder : ```tree /F /A | findstr /V "node_modules" | findstr /V "dist" > directory_structure.txt```

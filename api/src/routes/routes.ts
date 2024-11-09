@@ -7,6 +7,8 @@ import {  fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 import { UserController } from './../controllers/UserController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RootController } from './../controllers/RootController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { Power655Controller } from './../controllers/Power655DrawController';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
 
 
@@ -22,6 +24,16 @@ const models: TsoaRoute.Models = {
     "PrismaUser": {
         "dataType": "refAlias",
         "type": {"ref":"DefaultSelection_Prisma._36_UserPayload_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DefaultSelection_Prisma._36_Power655DrawPayload_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"jackpot2":{"dataType":"string","required":true},"jackpot1":{"dataType":"string","required":true},"wns":{"dataType":"string","required":true},"drawId":{"dataType":"double","required":true},"date":{"dataType":"datetime","required":true},"t":{"dataType":"string","required":true},"id":{"dataType":"double","required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Power655Draw": {
+        "dataType": "refAlias",
+        "type": {"ref":"DefaultSelection_Prisma._36_Power655DrawPayload_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
@@ -153,6 +165,153 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/power655',
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.welcomeMessage)),
+
+            async function Power655Controller_welcomeMessage(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new Power655Controller();
+
+              await templateService.apiHandler({
+                methodName: 'welcomeMessage',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/power655/get-result-all',
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.getResultAll)),
+
+            async function Power655Controller_getResultAll(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new Power655Controller();
+
+              await templateService.apiHandler({
+                methodName: 'getResultAll',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/power655/drop-result-all',
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.dropResultAll)),
+
+            async function Power655Controller_dropResultAll(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new Power655Controller();
+
+              await templateService.apiHandler({
+                methodName: 'dropResultAll',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/power655/get-result/:lastDrawId',
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.getResultFrom3rdParty)),
+
+            async function Power655Controller_getResultFrom3rdParty(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    lastDrawId: {"in":"path","name":"lastDrawId","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new Power655Controller();
+
+              await templateService.apiHandler({
+                methodName: 'getResultFrom3rdParty',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/power655/sync-result/:lastDrawId',
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.syncResultFrom3rdParty)),
+
+            async function Power655Controller_syncResultFrom3rdParty(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    lastDrawId: {"in":"path","name":"lastDrawId","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new Power655Controller();
+
+              await templateService.apiHandler({
+                methodName: 'syncResultFrom3rdParty',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 201,
               });
             } catch (err) {
                 return next(err);

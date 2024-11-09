@@ -22,75 +22,18 @@ model User {
   phone     String?  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("users")
 }
 
-model ResultPw655 {
+model Power655Draw {
   id       Int      @id @default(autoincrement())
   t        String
   date     DateTime
-  drawId   Int
-  wn1      Int
-  wn2      Int
-  wn3      Int
-  wn4      Int
-  wn5      Int
-  wn6      Int
-  wn7      Int?
-  jackpot1 BigInt
-  jackpot2 BigInt
-  n1       Int
-  n2       Int
-  n3       Int
-  n4       Int
-  n5       Int
-  n6       Int
-  n7       Int
-  n8       Int
-  n9       Int
-  n10      Int
-  n11      Int
-  n12      Int
-  n13      Int
-  n14      Int
-  n15      Int
-  n16      Int
-  n17      Int
-  n18      Int
-  n19      Int
-  n20      Int
-  n21      Int
-  n22      Int
-  n23      Int
-  n24      Int
-  n25      Int
-  n26      Int
-  n27      Int
-  n28      Int
-  n29      Int
-  n30      Int
-  n31      Int
-  n32      Int
-  n33      Int
-  n34      Int
-  n35      Int
-  n36      Int
-  n37      Int
-  n38      Int
-  n39      Int
-  n40      Int
-  n41      Int
-  n42      Int
-  n43      Int
-  n44      Int
-  n45      Int
-  n46      Int
-  n47      Int
-  n48      Int
-  n49      Int
-  n50      Int
-  n51      Int
-  n52      Int
-  n53      Int
-  n54      Int
-  n55      Int
+  drawId   Int      @map("draw_id")
+  wns      String
+  jackpot1 String
+  jackpot2 String
+
+  @@map("power_655_draws")
 }
