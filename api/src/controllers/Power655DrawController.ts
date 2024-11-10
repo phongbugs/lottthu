@@ -21,9 +21,22 @@ export class Power655Controller extends Controller {
     return "Welcome to the Power655's API!";
   }
   @SuccessResponse("200", "Get latest result from database")
-  @Get("/get-result-all")
+  @Get("/results")
   public async getResultAll(): Promise<Power655Draw[]> {
     return await prisma.power655Draw.findMany();
+  }
+
+  @SuccessResponse("200", "Get latest result from database")
+  @Get("/results/last/{quantity}")
+  public async getResultByLastDrawIds(
+    @Path() quantity: number
+  ): Promise<Power655Draw[]> {
+    return await prisma.power655Draw.findMany({
+      take: quantity,
+      orderBy: {
+        drawId: "desc",
+      },
+    });
   }
   /**
    * Deletes all records from the Power655Draw table.
@@ -34,11 +47,11 @@ export class Power655Controller extends Controller {
    * @returns {void} 200 - All results deleted successfully
    */
   @SuccessResponse("200", "All results deleted successfully")
-  @Delete("/drop-result-all")
+  @Delete("/results")
   public async dropResultAll(): Promise<void> {
     await prisma.power655Draw.deleteMany();
   }
-  @Get("/get-result/{lastDrawId}")
+  @Get("/results/{lastDrawId}")
   @SuccessResponse("200", "Get latest result from 3rd party")
   public async getResultFrom3rdParty(
     @Path() lastDrawId: number
@@ -47,7 +60,7 @@ export class Power655Controller extends Controller {
     const result = await handler.covertHtmlFromHtmlFile(lastDrawId);
     return result;
   }
-  @Post("/sync-result/{lastDrawId}")
+  @Post("/results/sync/{lastDrawId}")
   @SuccessResponse("201", "Sync latest result from 3rd party")
   public async syncResultAllFrom3rdParty(
     @Path() lastDrawId: number

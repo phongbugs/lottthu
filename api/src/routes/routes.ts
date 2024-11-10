@@ -200,7 +200,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/power655/get-result-all',
+        app.get('/api/power655/results',
             ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
             ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.getResultAll)),
 
@@ -229,7 +229,37 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.delete('/api/power655/drop-result-all',
+        app.get('/api/power655/results/last/:quantity',
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.getResultByLastDrawIds)),
+
+            async function Power655Controller_getResultByLastDrawIds(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    quantity: {"in":"path","name":"quantity","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new Power655Controller();
+
+              await templateService.apiHandler({
+                methodName: 'getResultByLastDrawIds',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/power655/results',
             ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
             ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.dropResultAll)),
 
@@ -258,7 +288,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/power655/get-result/:lastDrawId',
+        app.get('/api/power655/results/:lastDrawId',
             ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
             ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.getResultFrom3rdParty)),
 
@@ -288,7 +318,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/power655/sync-result/:lastDrawId',
+        app.post('/api/power655/results/sync/:lastDrawId',
             ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
             ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.syncResultAllFrom3rdParty)),
 

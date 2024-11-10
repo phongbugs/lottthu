@@ -291,7 +291,7 @@
 				"parameters": []
 			}
 		},
-		"/power655/get-result-all": {
+		"/power655/results": {
 			"get": {
 				"operationId": "GetResultAll",
 				"responses": {
@@ -314,9 +314,7 @@
 				],
 				"security": [],
 				"parameters": []
-			}
-		},
-		"/power655/drop-result-all": {
+			},
 			"delete": {
 				"operationId": "DropResultAll",
 				"responses": {
@@ -333,7 +331,42 @@
 				"parameters": []
 			}
 		},
-		"/power655/get-result/{lastDrawId}": {
+		"/power655/results/last/{quantity}": {
+			"get": {
+				"operationId": "GetResultByLastDrawIds",
+				"responses": {
+					"200": {
+						"description": "Get latest result from database",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Power655Draw"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Power655"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "quantity",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/power655/results/{lastDrawId}": {
 			"get": {
 				"operationId": "GetResultFrom3rdParty",
 				"responses": {
@@ -369,7 +402,7 @@
 				]
 			}
 		},
-		"/power655/sync-result/{lastDrawId}": {
+		"/power655/results/sync/{lastDrawId}": {
 			"post": {
 				"operationId": "SyncResultAllFrom3rdParty",
 				"responses": {
