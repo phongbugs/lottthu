@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "tsoa spec-and-routes && tsc",
-    "start": "node dist/src/server.js",
-    "dev": "vite",
-    "tsoa:watch": "npx tsoa spec-and-routes"
+    "start": "cross-env NODE_ENV=production node dist/src/index.js",
+    "dev": "cross-env NODE_ENV=development vite",
+    "tsoa:watch": "npx tsoa spec-and-routes",
+    "prisma:migrate:dev": "cross-env NODE_ENV=development npx prisma migrate dev --name init",
+    "prisma:migrate:prod": "cross-env NODE_ENV=production npx prisma migrate deploy"
   },
   "prisma": {
     "seed": "ts-node prisma\\seed.ts"

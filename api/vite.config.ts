@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import { VitePluginNode } from "vite-plugin-node";
 import clearConsole from "vite-plugin-clear-console";
 import ViteRestart from "vite-plugin-restart";
+import { env } from "process";
 
 export default defineConfig({
   plugins: [
@@ -28,6 +29,6 @@ export default defineConfig({
     watch: {
       usePolling: true, // Optional: ensure this if using Windows or a VM
     },
-    port: 3000,
+    port: +(env.PORT ?? 3000),
   },
 });

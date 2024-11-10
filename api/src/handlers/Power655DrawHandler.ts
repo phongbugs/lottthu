@@ -2,21 +2,15 @@
 import * as cheerio from "cheerio";
 import * as fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 import { Power655Draw } from "@prisma/client";
-
 export class DrawPower655Handler {
   public async covertHtmlFromHtmlFile(
     lastDrawId: number,
     htmlFileName?: string
   ): Promise<Power655Draw[] | null> {
-    const defaultHtmlFileName = "../../data/pw655.history.html";
+    const defaultHtmlFileName = "data/pw655.history.html";
     const htmlFilePath = path.resolve(
-      __dirname,
+      process.cwd(),
       htmlFileName || defaultHtmlFileName
     );
     const html = fs.readFileSync(htmlFilePath, "utf-8");

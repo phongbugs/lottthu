@@ -3,9 +3,8 @@
     /* Basic Options */
     "incremental": true,
     "target": "ES2023",
-    "module": "ESNext",
+    "module": "CommonJS",
     "outDir": "./dist",
-
     /* Strict Type-Checking Options */
     "strict": true,
     "noImplicitAny": true,
@@ -15,31 +14,26 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-
-     /* Additional Checks */
+    /* Additional Checks */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-
     /* Module Resolution Options */
     "moduleResolution": "node",
     "baseUrl": ".",
     "esModuleInterop": true,
-
     /* Experimental Options */
     "experimentalDecorators": true,
     // emitDecoratorMetadata is not needed by tsoa (unless you are using Custom Middlewares)
-
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true,
-
     "skipLibCheck": true,
     "types": ["node"],
     "resolveJsonModule": true
   },
   "include": [
-    "src/**/*.ts",  
-    ],
-  "exclude": ["node_modules", "dist"],
+    "src/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
 }
