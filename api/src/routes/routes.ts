@@ -259,6 +259,37 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/power655/results/range',
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
+            ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.getResultByDateRange)),
+
+            async function Power655Controller_getResultByDateRange(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    startDate: {"in":"query","name":"startDate","required":true,"dataType":"string"},
+                    endDate: {"in":"query","name":"endDate","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new Power655Controller();
+
+              await templateService.apiHandler({
+                methodName: 'getResultByDateRange',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.delete('/api/power655/results',
             ...(fetchMiddlewares<RequestHandler>(Power655Controller)),
             ...(fetchMiddlewares<RequestHandler>(Power655Controller.prototype.dropResultAll)),

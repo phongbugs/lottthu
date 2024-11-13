@@ -8,6 +8,7 @@ import {
   SuccessResponse,
   Post,
   Delete,
+  Query,
 } from "tsoa";
 import { PrismaClient, Power655Draw } from "@prisma/client";
 import { DrawPower655Handler } from "../handlers/Power655DrawHandler";
@@ -18,7 +19,7 @@ const prisma = new PrismaClient();
 export class Power655Controller extends Controller {
   @Get("/")
   public async welcomeMessage(): Promise<string> {
-    return "Welcome to the Power655's API!";
+    return "Welcome to the Power655's API-!";
   }
   @SuccessResponse("200", "Get latest result from database")
   @Get("/results")
@@ -38,11 +39,31 @@ export class Power655Controller extends Controller {
       },
     });
   }
+  @SuccessResponse("200", "Get results by date range 2")
+  @Get("/results/range")
+  public async getResultByDateRange(
+    @Query() startDate: string,
+    @Query() endDate: string
+  ): Promise<Power655Draw[]> {
+    const start = startDate ? new Date(startDate) : new Date("2020-01-01"); // Default start date
+    const end = endDate ? new Date(endDate) : new Date(); // Default end date as today
+    return await prisma.power655Draw.findMany({
+      where: {
+        date: {
+          gte: start,
+          lte: end,
+        },
+      },
+      orderBy: {
+        date: "asc",
+      },
+    });
+  }
   /**
    * Deletes all records from the Power655Draw table.
    * This operation will permanently remove all draw results from the database.
    *
-   * @summary Delete all Power655 draw results
+   * @summary Delete all Power655 draw results from the database
    * @description This endpoint deletes all records in the Power655Draw table. Use with caution as it will remove all draw result data.
    * @returns {void} 200 - All results deleted successfully
    */

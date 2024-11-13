@@ -6,8 +6,9 @@
   "scripts": {
     "build": "tsoa spec-and-routes && tsc",
     "start": "cross-env NODE_ENV=production node dist/src/index.js",
-    "dev": "cross-env NODE_ENV=development npx tsoa spec-and-routes && vite",
-    "tsoa:watch": "npx tsoa spec-and-routes",
+    "dev": "concurrently \"npm run watch:tsoa\" \"vite\"",
+    "dev:restart": "vite",
+    "watch:tsoa": "nodemon --config nodemon.json --exec \"npx tsoa spec-and-routes\"",
     "prisma:migrate:dev": "cross-env NODE_ENV=development npx prisma migrate dev --name init",
     "prisma:migrate:prod": "cross-env NODE_ENV=production npx prisma migrate deploy"
   },
@@ -21,6 +22,7 @@
     "@prisma/client": "^5.21.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "mysql2": "^3.11.3",
@@ -39,6 +41,7 @@
     "@types/node": "^22.8.5",
     "@types/swagger-ui-express": "^4.1.7",
     "cheerio": "^1.0.0",
+    "concurrently": "^9.1.0",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",

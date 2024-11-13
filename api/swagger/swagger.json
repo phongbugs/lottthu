@@ -323,7 +323,7 @@
 					}
 				},
 				"description": "Deletes all records from the Power655Draw table.\nThis operation will permanently remove all draw results from the database.",
-				"summary": "Delete all Power655 draw results",
+				"summary": "Delete all Power655 draw results from the database",
 				"tags": [
 					"Power655"
 				],
@@ -361,6 +361,48 @@
 						"schema": {
 							"format": "double",
 							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/power655/results/range": {
+			"get": {
+				"operationId": "GetResultByDateRange",
+				"responses": {
+					"200": {
+						"description": "Get results by date range 2",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Power655Draw"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Power655"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "startDate",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "endDate",
+						"required": true,
+						"schema": {
+							"type": "string"
 						}
 					}
 				]

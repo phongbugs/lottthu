@@ -25,7 +25,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Error handling middleware
 app.use(
   (
-    err: any,
+    err: Error,
     _req: express.Request,
     res: express.Response,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -36,15 +36,17 @@ app.use(
   }
 );
 
-// Start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running in ${env} mode on port ${port}`);
-});
-
 // Export for Vite in development mode
 if (env === "development") {
-  (global as any).viteNodeApp = app;
+  (
+    global as typeof globalThis & { viteNodeApp?: express.Application }
+  ).viteNodeApp = app;
+} else {
+  // Start the server
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`Server is running in ${env} mode on port ${port}`);
+  });
 }
 
 export const viteNodeApp = app;
