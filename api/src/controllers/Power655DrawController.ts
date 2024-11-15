@@ -59,28 +59,6 @@ export class Power655Controller extends Controller {
       },
     });
   }
-  /**
-   * Deletes all records from the Power655Draw table.
-   * This operation will permanently remove all draw results from the database.
-   *
-   * @summary Delete all Power655 draw results from the database
-   * @description This endpoint deletes all records in the Power655Draw table. Use with caution as it will remove all draw result data.
-   * @returns {void} 200 - All results deleted successfully
-   */
-  @SuccessResponse("200", "All results deleted successfully")
-  @Delete("/results")
-  public async dropResultAll(): Promise<void> {
-    await prisma.power655Draw.deleteMany();
-  }
-  @Get("/results/{lastDrawId}")
-  @SuccessResponse("200", "Get latest result from 3rd party")
-  public async getResultFrom3rdParty(
-    @Path() lastDrawId: number
-  ): Promise<Power655Draw[] | null> {
-    const handler = new DrawPower655Handler();
-    const result = await handler.covertHtmlToJson(lastDrawId);
-    return result;
-  }
   @Post("/results/sync/{lastDrawId}")
   @SuccessResponse("201", "Sync latest result from 3rd party")
   public async syncResultAllFrom3rdParty(
@@ -99,5 +77,18 @@ export class Power655Controller extends Controller {
       });
     }
     return result;
+  }
+  /**
+   * Deletes all records from the Power655Draw table.
+   * This operation will permanently remove all draw results from the database.
+   *
+   * @summary Delete all Power655 draw results from the database
+   * @description This endpoint deletes all records in the Power655Draw table. Use with caution as it will remove all draw result data.
+   * @returns {void} 200 - All results deleted successfully
+   */
+  @SuccessResponse("200", "All results deleted successfully")
+  @Delete("/results")
+  public async dropResultAll(): Promise<void> {
+    await prisma.power655Draw.deleteMany();
   }
 }

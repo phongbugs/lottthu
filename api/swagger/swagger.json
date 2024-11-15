@@ -408,42 +408,6 @@
 				]
 			}
 		},
-		"/power655/results/{lastDrawId}": {
-			"get": {
-				"operationId": "GetResultFrom3rdParty",
-				"responses": {
-					"200": {
-						"description": "Get latest result from 3rd party",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Power655Draw"
-									},
-									"type": "array",
-									"nullable": true
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Power655"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "lastDrawId",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			}
-		},
 		"/power655/results/sync/{lastDrawId}": {
 			"post": {
 				"operationId": "SyncResultAllFrom3rdParty",

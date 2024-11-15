@@ -15,5 +15,7 @@ module.exports = {
   },
   rules: {
     quotes: ["error", "double"],
+    "linebreak-style": ["off"],
+    "prettier/prettier": ["error", { endOfLine: "auto" }],
   },
 };
