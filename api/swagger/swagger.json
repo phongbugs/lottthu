@@ -322,7 +322,7 @@
 						"description": "All results deleted successfully"
 					}
 				},
-				"description": "Deletes all records from the Power655Draw table.\nThis operation will permanently remove all draw results from the database.",
+				"description": "Deletes all records from the Power655Draw table.\r\nThis operation will permanently remove all draw results from the database.",
 				"summary": "Delete all Power655 draw results from the database",
 				"tags": [
 					"Power655"

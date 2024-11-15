@@ -1,19 +1,12 @@
 // src/application/handlers/ResultPW655Handler.ts
 import * as cheerio from "cheerio";
-import * as fs from "fs";
-import path from "path";
 import { Power655Draw } from "@prisma/client";
+import axios from "axios";
 export class DrawPower655Handler {
-  public async covertHtmlFromHtmlFile(
-    lastDrawId: number,
-    htmlFileName?: string
+  public async covertHtmlToJson(
+    lastDrawId: number
   ): Promise<Power655Draw[] | null> {
-    const defaultHtmlFileName = "data/pw655.history.html";
-    const htmlFilePath = path.resolve(
-      process.cwd(),
-      htmlFileName || defaultHtmlFileName
-    );
-    const html = fs.readFileSync(htmlFilePath, "utf-8");
+    const html = await this.fetchResultHtmlFrom3rdParty();
     const $ = cheerio.load(html);
     const results: any[] = [];
     const rows = $("tbody tr");
@@ -57,5 +50,19 @@ export class DrawPower655Handler {
   private parseDateUTC(dateString: string): Date {
     const [day, month, year] = dateString.split("/").map(Number);
     return new Date(Date.UTC(year, month - 1, day));
+  }
+  private async fetchResultHtmlFrom3rdParty(): Promise<string> {
+    const currentDate = new Date();
+    const day = String(currentDate.getDate()).padStart(2, "0");
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+    const year = currentDate.getFullYear();
+    const formattedDate = `${day}-${month}-${year}`;
+    const url = `https://www.ketquadientoan.com/tat-ca-ky-xo-so-power-655.html?datef=01-01-2020&datet=${formattedDate}`;
+    const response = await axios.get(url);
+    const $ = cheerio.load(response.data);
+    const tableHtml = `<table width="100%" class="table-mini-result power-mini">${$(
+      "table.table-mini-result.power-mini"
+    ).html()}</table>`;
+    return tableHtml || "";
   }
 }

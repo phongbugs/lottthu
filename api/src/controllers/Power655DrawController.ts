@@ -78,7 +78,7 @@ export class Power655Controller extends Controller {
     @Path() lastDrawId: number
   ): Promise<Power655Draw[] | null> {
     const handler = new DrawPower655Handler();
-    const result = await handler.covertHtmlFromHtmlFile(lastDrawId);
+    const result = await handler.covertHtmlToJson(lastDrawId);
     return result;
   }
   @Post("/results/sync/{lastDrawId}")
@@ -87,7 +87,7 @@ export class Power655Controller extends Controller {
     @Path() lastDrawId: number
   ): Promise<Power655Draw[] | null> {
     const handler = new DrawPower655Handler();
-    const result = await handler.covertHtmlFromHtmlFile(lastDrawId);
+    const result = await handler.covertHtmlToJson(lastDrawId);
     if (result) {
       result.map((item) => {
         if (Array.isArray(item.wns)) {
