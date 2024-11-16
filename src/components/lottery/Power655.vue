@@ -49,26 +49,22 @@
         <DrawPeriodSelect></DrawPeriodSelect>
       </div>
       <div class="col-2 col-sm-1 col-md-1 col-lg-1 col-xl-1 my-1">
-        <el-button
-          class="btn btn-sm btn-primary w-100 justify-content-end fw-bold"
-          type="primary"
-          ><i class="bi bi-search"></i
-        ></el-button>
+        <SearchButton @search-results="updateListBalls" />
       </div>
     </div>
     <div class="row m-1 d-none">
       <div class="col-12 col-md-6 col-lg-4 my-1">
         <ListBallNumber
-          legend="Kết quả quay 10-10-2024"
+          :legend="`Kết quả kì quay #${drawId} (${drawDate})`"
           :balls="balls"
           :chips="chips"
         ></ListBallNumber>
-        <div class="m-1 p-1" style="overflow-y: scroll; background-color: #eee">
+        <div class="m-1 p-1" style="background-color: #ccc">
           <ListBallNumber
             v-for="(result, index) in listBalls"
             :key="index"
-            class="my-1 overflow-scroll"
-            :legend="`Kết quả quay ${result.date}`"
+            class="my-1"
+            :legend="`Kì quay #${result.drawId} (${result.date})`"
             :balls="result.balls"
             :chips="result.chips"
           ></ListBallNumber>
@@ -88,57 +84,75 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, ref } from "vue";
+
+interface Ball {
+  drawId: number;
+  date: string;
+  balls: number[];
+  chips: number[];
+}
+import { t } from "@/core/helpers/i18n";
 import DateRangePicker from "./DateRangePicker.vue";
 import DrawPeriodSelect from "./DrawPeriodSelect.vue";
 import ListBallNumber from "./ListBallNumber.vue";
-import { defineComponent, ref } from "vue";
-import { t } from "@/core/helpers/i18n";
+import SearchButton from "./SearchButton.vue";
+
 export default defineComponent({
   name: "Power-655",
   components: {
     DateRangePicker,
     ListBallNumber,
     DrawPeriodSelect,
+    SearchButton,
   },
   props: {
     msg: String,
   },
+
   setup() {
     const isPeriodSelected = ref(true);
-
-    function toggleSelection(isPeriod) {
+    const listBalls = ref<Ball[]>([
+      {
+        drawId: 1006,
+        date: "10-10-2023",
+        balls: [5, 12, 23, 34, 45, 56, 11],
+        chips: [1, 2, 3, 4, 5, 6, 7, 111],
+      },
+      ...Array.from({ length: 50 }, (_, i) => ({
+        drawId: 1006 - i,
+        date: new Date(
+          Date.now() - i * 24 * 60 * 60 * 1000
+        ).toLocaleDateString(),
+        balls: Array.from(
+          { length: 7 },
+          () => Math.floor(Math.random() * 59) + 1
+        ),
+        chips: Array.from(
+          { length: 7 },
+          () => Math.floor(Math.random() * 200) + 1
+        ),
+      })),
+    ]);
+    function toggleSelection(isPeriod: boolean) {
       isPeriodSelected.value = isPeriod;
+    }
+
+    function updateListBalls(results: Ball[]) {
+      listBalls.value = results;
+      alert("Updated");
     }
     return {
       t,
       balls: [12, 23, 34, 45, 50, 13, 1],
-      listBalls: [
-        {
-          date: "10-10-2023",
-          balls: [5, 12, 23, 34, 45, 56, 11],
-          chips: [1, 2, 3, 4, 5, 6, 7, 111],
-        },
-        {
-          date: "11-10-2023",
-          balls: [6, 13, 24, 35, 46, 57, 7],
-          chips: [8, 9, 10, 11, 12, 13, 14, 65],
-        },
-        ...Array.from({ length: 50 }, (_, i) => ({
-          date: "12-10-2023",
-          balls: Array.from(
-            { length: 7 },
-            () => Math.floor(Math.random() * 59) + 1
-          ),
-          chips: Array.from(
-            { length: 7 },
-            () => Math.floor(Math.random() * 200) + 1
-          ),
-        })),
-      ],
       chips: [12, 23, 34, 45, 56, 67, 177],
+      drawId: 1007,
+      drawDate: "10-10-2023",
       selectedDate: [new Date(), new Date()],
       isPeriodSelected,
+      listBalls,
       toggleSelection,
+      updateListBalls,
     };
   },
 });
