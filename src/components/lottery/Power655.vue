@@ -46,13 +46,19 @@
         v-else
         class="col-10 col-sm-11 col-md-5 col-lg-4 col-xl-3 col-xxl-2 my-1 d-flex align-items-center"
       >
-        <DrawPeriodSelect></DrawPeriodSelect>
+        <DrawPeriodSelect
+          @update:drawPeriodValue="updateDrawPeriodValue"
+        ></DrawPeriodSelect>
       </div>
       <div class="col-2 col-sm-1 col-md-1 col-lg-1 col-xl-1 my-1">
-        <SearchButton @search-results="updateListBalls" />
+        <SearchButton
+          id="search-button"
+          @search-results="updateListBalls"
+          :quantity="drawPeriodValue"
+        />
       </div>
     </div>
-    <div class="row m-1 d-none">
+    <div class="row m-1 d-flex">
       <div class="col-12 col-md-6 col-lg-4 my-1">
         <ListBallNumber
           :legend="`Kết quả kì quay #${drawId} (${drawDate})`"
@@ -112,35 +118,48 @@ export default defineComponent({
 
   setup() {
     const isPeriodSelected = ref(true);
+    const drawPeriodValue = ref(5);
     const listBalls = ref<Ball[]>([
-      {
-        drawId: 1006,
-        date: "10-10-2023",
-        balls: [5, 12, 23, 34, 45, 56, 11],
-        chips: [1, 2, 3, 4, 5, 6, 7, 111],
-      },
-      ...Array.from({ length: 50 }, (_, i) => ({
-        drawId: 1006 - i,
-        date: new Date(
-          Date.now() - i * 24 * 60 * 60 * 1000
-        ).toLocaleDateString(),
-        balls: Array.from(
-          { length: 7 },
-          () => Math.floor(Math.random() * 59) + 1
-        ),
-        chips: Array.from(
-          { length: 7 },
-          () => Math.floor(Math.random() * 200) + 1
-        ),
-      })),
+      // {
+      //   drawId: 1006,
+      //   date: "10-10-2023",
+      //   balls: [5, 12, 23, 34, 45, 56, 11],
+      //   chips: [1, 2, 3, 4, 5, 6, 7, 111],
+      // },
+      // ...Array.from({ length: 50 }, (_, i) => ({
+      //   drawId: 1006 - i,
+      //   date: new Date(
+      //     Date.now() - i * 24 * 60 * 60 * 1000
+      //   ).toLocaleDateString(),
+      //   balls: Array.from(
+      //     { length: 7 },
+      //     () => Math.floor(Math.random() * 59) + 1
+      //   ),
+      //   chips: Array.from(
+      //     { length: 7 },
+      //     () => Math.floor(Math.random() * 200) + 1
+      //   ),
+      // })),
     ]);
     function toggleSelection(isPeriod: boolean) {
       isPeriodSelected.value = isPeriod;
     }
 
-    function updateListBalls(results: Ball[]) {
-      listBalls.value = results;
-      alert("Updated");
+    function updateListBalls(results: any[]) {
+      listBalls.value = results.map((result) => ({
+        drawId: result.drawId,
+        date: new Date(result.date).toLocaleDateString("vi-VN"),
+        balls: result.wns.split(",").map((item: string) => parseInt(item)),
+        chips: result.wns.split(",").map((item: string) => parseInt(item)),
+      }));
+    }
+    function updateDrawPeriodValue(value: number) {
+      drawPeriodValue.value = value;
+      console.log(drawPeriodValue.value);
+      const searchButton = document.getElementById("search-button");
+      if (searchButton) {
+        searchButton.click();
+      }
     }
     return {
       t,
@@ -153,6 +172,8 @@ export default defineComponent({
       listBalls,
       toggleSelection,
       updateListBalls,
+      drawPeriodValue,
+      updateDrawPeriodValue,
     };
   },
 });

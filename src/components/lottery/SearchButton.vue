@@ -16,8 +16,14 @@ import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "SearchButton",
-  emits: ["search-results"], // Declare the custom event
-  setup(_, { emit }) {
+  emits: ["search-results"],
+  props: {
+    quantity: {
+      type: Number,
+      default: 5,
+    },
+  },
+  setup(props, { emit }) {
     const isLoading = ref(false);
 
     async function fetchResults(quantity: number) {
@@ -35,7 +41,7 @@ export default defineComponent({
     const handleFetchResults = async () => {
       isLoading.value = true;
       try {
-        const results = await fetchResults(10); // Pass the quantity as needed
+        const results = await fetchResults(props.quantity); // Pass the quantity as needed
         emit("search-results", results);
       } catch (error) {
         console.error(error);

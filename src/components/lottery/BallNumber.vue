@@ -1,6 +1,6 @@
 <template>
   <div :class="['ball', ballColor]">
-    <span class="number fs-4">{{ ballNumber }}</span>
+    <span class="number fs-4">{{ formmattedNumber }}</span>
     <div v-tooltip :title="titleChip" class="chip pointer">
       {{ chipNumber }}
     </div>
@@ -31,6 +31,9 @@ export default defineComponent({
     },
     titleChip() {
       return "Số này đã xuất hiện " + this.chipNumber + " lần";
+    },
+    formmattedNumber() {
+      return this.ballNumber.toString().padStart(2, "0");
     },
   },
 });
