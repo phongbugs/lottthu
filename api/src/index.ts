@@ -14,7 +14,11 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://192.168.1.3:5173",
+  })
+);
 
 // Register TSOA routes
 RegisterRoutes(app);

@@ -207,3 +207,31 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 - list and write struct folders and files :
   - exclude node_module  ```tree /F /A /I | findstr /V "node_modules" > directory_structure.txt```
   - exclude many folder : ```tree /F /A | findstr /V "node_modules" | findstr /V "dist" > directory_structure.txt```
+
+## Allow domain access to API
+  - Client : change ```localhost``` to ```<new domain>``` name
+  - Server :
+    - Add CORS :
+      ```js
+        app.use(
+          cors({
+            origin: "http://192.168.1.3:5173",
+          })
+        );
+      ```
+    - Change vite.config.ts: 
+      ```js
+      server: {
+        host: "0.0.0.0",
+      }
+      ```
+
+## Allow other domain access to Database
+  - Check white list to main :
+    ```sql
+    SELECT Host, User FROM mysql.user WHERE User = 'root';
+    ```
+  - Grant new domain to access : 
+    ```sql
+    GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.1.3' IDENTIFIED BY 'admin';
+    ```

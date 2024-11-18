@@ -8,7 +8,8 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "start:api": "cd api && npm run dev"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.2",
@@ -66,7 +67,7 @@
     "array-sort": "^1.0.0",
     "eslint": "^8.22.0",
     "eslint-plugin-vue": "^9.3.0",
-    "npm-run-all": "^4.1.5",
+    "npm-run-all": "^2.1.0",
     "prettier": "^2.7.1",
     "sass": "1.63.4",
     "sass-loader": "^13.3.1",
