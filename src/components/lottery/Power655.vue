@@ -60,21 +60,23 @@
     </div>
     <div class="row m-1 d-flex">
       <div class="col-12 col-md-6 col-lg-4 my-1">
-        <ListBallNumber
+        <!--<ListBallNumber
           :legend="`Kết quả kì quay #${drawId} (${drawDate})`"
           :balls="balls"
           :chips="chips"
+        ></ListBallNumber>-->
+        <!-- <div class="m-1 p-1" style="background-color: transparent"> -->
+        <ListBallNumber
+          v-for="(result, index) in listBalls"
+          :key="index"
+          class="my-1"
+          :legend="`[${(index + 1).toString().padStart(2, '0')}] ${t(
+            'legendDrawId'
+          )} #${result.drawId} ${t('legendDrawDate')} ${result.date}`"
+          :balls="result.balls"
+          :chips="result.chips"
         ></ListBallNumber>
-        <div class="m-1 p-1" style="background-color: #ccc">
-          <ListBallNumber
-            v-for="(result, index) in listBalls"
-            :key="index"
-            class="my-1"
-            :legend="`Kì quay #${result.drawId} (${result.date})`"
-            :balls="result.balls"
-            :chips="result.chips"
-          ></ListBallNumber>
-        </div>
+        <!-- </div> -->
       </div>
     </div>
     <div class="row m-1 d-none">

@@ -395,6 +395,8 @@ const messages = {
     datePickerEndPlaceholder: "End date",
     datePickerRangeSeparator: "to",
     lastestDrawPeriods: "Lastest draw periods",
+    legendDrawId: "Draw Id",
+    legendDrawDate: "of",
   },
   vi: {
     dashboard: "Dashboard",
@@ -475,12 +477,14 @@ const messages = {
     datePickerEndPlaceholder: "Đến ngày",
     datePickerRangeSeparator: "đến",
     lastestDrawPeriods: "Kỳ quay gần nhất",
+    legendDrawId: "Kỳ quay",
+    legendDrawDate: "ngày",
   },
 };
 
 const i18n = createI18n({
   legacy: false,
-  locale: "en",
+  locale: "vi",
   globalInjection: true,
   messages,
 });

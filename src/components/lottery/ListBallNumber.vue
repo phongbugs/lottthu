@@ -1,7 +1,13 @@
 <template>
-  <fieldset class="border rounded-2 p-5">
-    <legend class="float-none w-auto">
-      <span class="fw-bold fs-5">{{ legend }}</span>
+  <fieldset
+    class="border rounded-1 p-5 m-1"
+    style="background-color: rgb(145 140 124)"
+  >
+    <legend
+      class="float-none w-auto rounded-1"
+      style="background-color: #959595"
+    >
+      <span class="fs-5 p-2" style="color: white">{{ legend }}</span>
     </legend>
     <div class="d-flex justify-content-between">
       <BallNumber
