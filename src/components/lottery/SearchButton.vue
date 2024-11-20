@@ -12,8 +12,7 @@
 <script lang="ts">
 import axios from "axios";
 import { API_ENDPOINTS } from "@/config/api";
-import { defineComponent, ref } from "vue";
-
+import { defineComponent, ref, watch } from "vue";
 export default defineComponent({
   name: "SearchButton",
   emits: ["search-results"],
@@ -26,6 +25,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const isLoading = ref(false);
 
+    // Function to fetch results
     async function fetchResults(quantity: number) {
       try {
         const response = await axios.get(
@@ -38,13 +38,24 @@ export default defineComponent({
       }
     }
 
+    // Trigger search when quantity changes
+    watch(
+      () => props.quantity,
+      async (newQuantity) => {
+        console.log("Quantity changed to:", newQuantity);
+        await handleFetchResults();
+      }
+    );
+
+    // Handle fetch results and emit
     const handleFetchResults = async () => {
       isLoading.value = true;
+      //emit("click", isLoading);
       try {
-        const results = await fetchResults(props.quantity); // Pass the quantity as needed
-        emit("search-results", results);
+        const results = await fetchResults(props.quantity);
+        emit("search-results", results); // Emit results to parent
       } catch (error) {
-        console.error(error);
+        console.error("Error in handleFetchResults:", error);
       } finally {
         isLoading.value = false;
       }
@@ -60,7 +71,7 @@ export default defineComponent({
 
 <style scoped>
 .spinner {
-  animation: spin 1s linear infinite; /* Xoay liên tục */
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {

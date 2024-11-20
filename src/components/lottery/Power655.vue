@@ -55,17 +55,17 @@
           id="search-button"
           @search-results="updateListBalls"
           :quantity="drawPeriodValue"
+          :isLoading="isLoading"
+          @click="isLoading = true"
         />
       </div>
     </div>
+    <!-- Loading Mask -->
+    <div v-if="isLoading" class="loading-mask">
+      <div class="spinner"></div>
+    </div>
     <div class="row m-1 d-flex">
       <div class="col-12 col-md-6 col-lg-4 my-1">
-        <!--<ListBallNumber
-          :legend="`Kết quả kì quay #${drawId} (${drawDate})`"
-          :balls="balls"
-          :chips="chips"
-        ></ListBallNumber>-->
-        <!-- <div class="m-1 p-1" style="background-color: transparent"> -->
         <ListBallNumber
           v-for="(result, index) in listBalls"
           :key="index"
@@ -76,35 +76,24 @@
           :balls="result.balls"
           :chips="result.chips"
         ></ListBallNumber>
-        <!-- </div> -->
-      </div>
-    </div>
-    <div class="row m-1 d-none">
-      <div class="col-12 col-md-6 col-lg-4 my-1">
-        <ListBallNumber
-          legend="Chiến lược chọn số"
-          :balls="balls"
-          :chips="chips"
-        ></ListBallNumber>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-
 interface Ball {
   drawId: number;
   date: string;
   balls: number[];
   chips: number[];
 }
-import { t } from "@/core/helpers/i18n";
+import { defineComponent, ref } from "vue";
 import DateRangePicker from "./DateRangePicker.vue";
 import DrawPeriodSelect from "./DrawPeriodSelect.vue";
 import ListBallNumber from "./ListBallNumber.vue";
 import SearchButton from "./SearchButton.vue";
+import { t } from "@/core/helpers/i18n";
 
 export default defineComponent({
   name: "Power-655",
@@ -117,32 +106,13 @@ export default defineComponent({
   props: {
     msg: String,
   },
-
   setup() {
+    const isLoading = ref(false);
     const isPeriodSelected = ref(true);
     const drawPeriodValue = ref(5);
-    const listBalls = ref<Ball[]>([
-      // {
-      //   drawId: 1006,
-      //   date: "10-10-2023",
-      //   balls: [5, 12, 23, 34, 45, 56, 11],
-      //   chips: [1, 2, 3, 4, 5, 6, 7, 111],
-      // },
-      // ...Array.from({ length: 50 }, (_, i) => ({
-      //   drawId: 1006 - i,
-      //   date: new Date(
-      //     Date.now() - i * 24 * 60 * 60 * 1000
-      //   ).toLocaleDateString(),
-      //   balls: Array.from(
-      //     { length: 7 },
-      //     () => Math.floor(Math.random() * 59) + 1
-      //   ),
-      //   chips: Array.from(
-      //     { length: 7 },
-      //     () => Math.floor(Math.random() * 200) + 1
-      //   ),
-      // })),
-    ]);
+    const listBalls = ref<Ball[]>([]);
+    const selectedDate = ref([new Date(), new Date()]);
+
     function toggleSelection(isPeriod: boolean) {
       isPeriodSelected.value = isPeriod;
     }
@@ -154,60 +124,61 @@ export default defineComponent({
         balls: result.wns.split(",").map((item: string) => parseInt(item)),
         chips: result.wns.split(",").map((item: string) => parseInt(item)),
       }));
+      isLoading.value = false;
     }
+
     function updateDrawPeriodValue(value: number) {
       drawPeriodValue.value = value;
-      console.log(drawPeriodValue.value);
-      const searchButton = document.getElementById("search-button");
-      if (searchButton) {
-        searchButton.click();
-      }
+      isLoading.value = true;
     }
+
     return {
       t,
-      balls: [12, 23, 34, 45, 50, 13, 1],
-      chips: [12, 23, 34, 45, 56, 67, 177],
-      drawId: 1007,
-      drawDate: "10-10-2023",
-      selectedDate: [new Date(), new Date()],
-      isPeriodSelected,
+      isLoading,
       listBalls,
+      isPeriodSelected,
+      selectedDate,
+      drawPeriodValue,
       toggleSelection,
       updateListBalls,
-      drawPeriodValue,
       updateDrawPeriodValue,
     };
   },
 });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.loading-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
 }
 
-li {
-  display: inline-block;
-  margin: 0 10px;
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-a {
-  color: #42b983;
-}
-
-.dotted {
-  border: 1px dotted orange;
-}
-
-.reset {
-  all: revert;
-}
 .boxrd {
   border-radius: 0 0.475rem 0.475rem 0 !important;
   padding: 3px 15px;
