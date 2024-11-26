@@ -68,11 +68,12 @@
       <div class="col-12 col-md-6 col-lg-4 my-1">
         <ListBallNumber
           v-for="(result, index) in listBalls"
-          :key="index"
           class="my-1"
-          :legend="`[${(index + 1).toString().padStart(2, '0')}] ${t(
-            'legendDrawId'
-          )} #${result.drawId} ${t('legendDrawDate')} ${result.date}`"
+          :key="index"
+          :index="index + 1"
+          :legend="`${t('legendDrawId')} #${result.drawId} ${t(
+            'legendDrawDate'
+          )} ${result.date}`"
           :balls="result.balls"
           :chips="result.chips"
         ></ListBallNumber>

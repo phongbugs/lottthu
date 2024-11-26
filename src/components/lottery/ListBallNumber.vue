@@ -1,14 +1,16 @@
 <template>
   <fieldset
-    class="border rounded-1 p-5 m-1"
-    style="background-color: rgb(145 140 124)"
+    class="border border-1 border-secondary rounded-1 p-5 m-1"
+    style="background-color: transparent"
   >
     <legend
-      class="float-none w-auto rounded-1"
-      style="background-color: #959595"
+      class="float-none w-auto rounded-1 border border-1 border-secondary p-1 d-flex justify-content-between align-items-center"
+      :style="{ 'background-color': 'transparent', color: textColor }"
     >
-      <span class="fs-5 p-2" style="color: white">{{ legend }}</span>
+      <span class="circle p-1">{{ index.toString() }}</span>
+      <span class="fs-5 p-2">{{ legend }}</span>
     </legend>
+
     <div class="d-flex justify-content-between">
       <BallNumber
         v-for="(ball, index) in balls"
@@ -21,7 +23,7 @@
   </fieldset>
 </template>
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import BallNumber from "./BallNumber.vue";
 export default defineComponent({
   name: "ListBallNumber",
@@ -33,6 +35,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    index: {
+      type: Number,
+      required: true,
+    },
     balls: {
       type: Array,
       required: true,
@@ -42,5 +48,31 @@ export default defineComponent({
       required: true,
     },
   },
+  setup() {
+    const textColor = computed(() => {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "#fff"
+        : "#000";
+    });
+    return {
+      textColor,
+    };
+  },
 });
 </script>
+<style scoped>
+.circle {
+  width: 1.8125rem;
+  height: 1.8125rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  position: relative;
+  background-color: rgb(62 151 255);
+  float: left;
+  font-size: small;
+}
+</style>

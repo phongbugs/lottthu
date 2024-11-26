@@ -16,7 +16,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://192.168.1.3:5173",
+    origin: ["http://192.168.1.3:5173", "http://192.168.1.8:5173"],
   })
 );
 
