@@ -8,7 +8,20 @@
       :style="{ 'background-color': 'transparent', color: textColor }"
     >
       <span class="circle p-1">{{ index.toString() }}</span>
-      <span class="fs-5 p-2">{{ legend }}</span>
+      <span class="fs-5 p-2">{{ legendPrefix }}</span>
+      <span
+        class="fs-5 px-2 py-0 rounded"
+        :style="{
+          background:
+            'linear-gradient(to right, rgb(111 157 211), rgb(62 151 255))',
+          color: '#fff',
+          textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+        }"
+      >
+        #{{ legendDrawId }}
+      </span>
+      <span class="fs-5 p-2">{{ legendDate }}</span>
     </legend>
 
     <div class="d-flex justify-content-between">
@@ -31,7 +44,15 @@ export default defineComponent({
     BallNumber,
   },
   props: {
-    legend: {
+    legendPrefix: {
+      type: String,
+      required: true,
+    },
+    legendDate: {
+      type: String,
+      required: true,
+    },
+    legendDrawId: {
       type: String,
       required: true,
     },

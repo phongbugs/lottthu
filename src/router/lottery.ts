@@ -8,10 +8,10 @@ import { useConfigStore } from "@/stores/config";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/lottery",
+    path: "/power655",
     component: () => import("@/components/lottery/Power655.vue"),
     meta: {
-      pageTitle: "POMELO",
+      pageTitle: "Thống kê Power 6/55",
     },
     children: [],
   },
