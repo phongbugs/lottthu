@@ -19,7 +19,7 @@
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
         }"
       >
-        #{{ legendDrawId }}
+        #0{{ legendDrawId }}
       </span>
       <span class="fs-5 p-2">{{ legendDate }}</span>
     </legend>
@@ -35,9 +35,11 @@
     </div>
   </fieldset>
 </template>
+
 <script>
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, provide, ref } from "vue";
 import BallNumber from "./BallNumber.vue";
+
 export default defineComponent({
   name: "ListBallNumber",
   components: {
@@ -69,18 +71,28 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
+  setup(props) {
+    // Reactive text color based on the user's color scheme preference
     const textColor = computed(() => {
       return window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "#fff"
         : "#000";
     });
+
+    // Reactive draw ID, provided to child components
+    const drawId = ref(props.legendDrawId);
+    provide("drawId", drawId);
+    const indexPeriod = ref(props.index);
+    provide("indexPeriod", indexPeriod);
     return {
       textColor,
+      drawId,
+      indexPeriod,
     };
   },
 });
 </script>
+
 <style scoped>
 .circle {
   width: 1.8125rem;

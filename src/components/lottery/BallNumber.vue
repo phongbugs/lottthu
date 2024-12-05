@@ -1,13 +1,15 @@
 <template>
   <div :class="['ball', ballColor]">
-    <span class="number fs-4">{{ formmattedNumber }}</span>
+    <span class="number fs-4">{{ formattedNumber }}</span>
     <div v-tooltip :title="titleChip" class="chip pointer">
       {{ chipNumber }}
     </div>
   </div>
 </template>
+
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed, inject, ref } from "vue";
+
 export default defineComponent({
   name: "BallNumber",
   props: {
@@ -25,16 +27,33 @@ export default defineComponent({
       validator: (value: string) => ["red", "yellow"].includes(value),
     },
   },
-  computed: {
-    ballColor() {
-      return this.color;
-    },
-    titleChip() {
-      return "Số này đã xuất hiện " + this.chipNumber + " lần";
-    },
-    formmattedNumber() {
-      return this.ballNumber.toString().padStart(2, "0");
-    },
+  setup(props) {
+    const drawId = inject("drawId", ref(""));
+    const totalCurrentPeriods = inject("totalCurrentPeriods", ref(0));
+    const indexPeriod = inject("indexPeriod", ref(0));
+    const ballColor = computed(() => props.color);
+    const titleChip = computed(() => {
+      // return `Tại kì quay ${drawId.value} số này đã xuất hiện ${
+      //   props.chipNumber
+      // } lần trong ${
+      //   totalCurrentPeriods.value - (indexPeriod.value - 1)
+      // } kỳ quay`;
+      return `Số này đã xuất hiện ${props.chipNumber} lần trong tổng ${
+        totalCurrentPeriods.value - (indexPeriod.value - 1)
+      } kỳ quay đang chọn kể từ kì quay ${drawId.value}`;
+    });
+    const formattedNumber = computed(() =>
+      props.ballNumber.toString().padStart(2, "0")
+    );
+
+    return {
+      drawId,
+      totalCurrentPeriods,
+      indexPeriod,
+      ballColor,
+      titleChip,
+      formattedNumber,
+    };
   },
 });
 </script>
@@ -56,19 +75,15 @@ export default defineComponent({
   0% {
     transform: rotate(0deg);
   }
-
   25% {
     transform: rotate(5deg);
   }
-
   50% {
     transform: rotate(0deg);
   }
-
   75% {
     transform: rotate(-5deg);
   }
-
   100% {
     transform: rotate(0deg);
   }

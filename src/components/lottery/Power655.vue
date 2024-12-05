@@ -101,7 +101,7 @@ interface Ball {
   balls: number[];
   chips: number[];
 }
-import { defineComponent, ref, onMounted, computed } from "vue";
+import { defineComponent, ref, onMounted, computed, provide } from "vue";
 import DateRangePicker from "./DateRangePicker.vue";
 import DrawPeriodSelect from "./DrawPeriodSelect.vue";
 import ListBallNumber from "./ListBallNumber.vue";
@@ -127,19 +127,101 @@ export default defineComponent({
     const selectedDate = ref([new Date(), new Date()]);
     const controlRef = ref<HTMLElement | null>(null);
     const controlHeight = ref(0);
-
+    const totalCurrentPeriods = ref(0);
     function toggleSelection(isPeriod: boolean) {
       isPeriodSelected.value = isPeriod;
     }
-
+    provide("totalCurrentPeriods", totalCurrentPeriods);
     function updateListBalls(results: any[]) {
-      listBalls.value = results.map((result) => ({
-        drawId: result.drawId,
-        date: new Date(result.date).toLocaleDateString("vi-VN"),
-        balls: result.wns.split(",").map((item: string) => parseInt(item)),
-        chips: result.wns.split(",").map((item: string) => parseInt(item)),
-      }));
+      // listBalls.value = results.map((result) => ({
+      //   drawId: result.drawId,
+      //   date: new Date(result.date).toLocaleDateString("vi-VN"),
+      //   balls: result.wns.split(",").map((item: string) => parseInt(item)),
+      //   chips: result.wns.split(",").map((item: string) => parseInt(item)),
+      // }));
+
+      // Thống kê số lần xuất hiện của tất cả các số
+      //const frequencyMap: Record<number, number> = {};
+
+      // Duyệt qua tất cả các "wns" để tính tần suất
+      // results.forEach((result) => {
+      //   const numbers = result.wns
+      //     .split(",")
+      //     .map((item: string) => parseInt(item));
+      //   numbers.forEach((num) => {
+      //     frequencyMap[num] = (frequencyMap[num] || 0) + 1;
+      //   });
+      // });
+
+      // Tạo danh sách balls và thêm chips
+      // listBalls.value = results.map((result) => {
+      //   const balls = result.wns
+      //     .split(",")
+      //     .map((item: string) => parseInt(item));
+
+      //   return {
+      //     drawId: result.drawId,
+      //     date: new Date(result.date).toLocaleDateString("vi-VN"),
+      //     balls: balls,
+      //     chips: balls.map((num) => frequencyMap[num]), // Tần suất xuất hiện từng số
+      //   };
+      // });
+
+      // listBalls.value = results.map((result, index) => {
+      //   const balls = result.wns
+      //     .split(",")
+      //     .map((item: string) => parseInt(item));
+
+      //   // Thống kê tần suất chỉ từ các kỳ trước đó (index nhỏ hơn hiện tại)
+      //   const frequencyMap: Record<number, number> = {};
+      //   results.slice(0, index).forEach((prevResult) => {
+      //     const prevBalls = prevResult.wns
+      //       .split(",")
+      //       .map((item: string) => parseInt(item));
+      //     prevBalls.forEach((num) => {
+      //       frequencyMap[num] = (frequencyMap[num] || 0) + 1;
+      //     });
+      //   });
+
+      //   return {
+      //     drawId: result.drawId,
+      //     date: new Date(result.date).toLocaleDateString("vi-VN"),
+      //     balls: balls,
+      //     chips: balls.map((num) => frequencyMap[num] || 0), // Số lần xuất hiện trước kỳ hiện tại
+      //   };
+      // });
+
+      listBalls.value = results.map((result, index) => {
+        const balls = result.wns
+          .split(",")
+          .map((item: string) => parseInt(item))
+          .slice(0, -1);
+
+        // Thống kê tần suất từ các kỳ sau (index lớn hơn hiện tại)
+        const frequencyMap: Record<number, number> = {};
+        results.slice(index).forEach((nextResult) => {
+          const nextBalls = nextResult.wns
+            .split(",")
+            .map((item: string) => parseInt(item))
+            .slice(0, -1);
+          nextBalls.forEach((num) => {
+            frequencyMap[num] = (frequencyMap[num] || 0) + 1;
+          });
+        });
+
+        return {
+          drawId: result.drawId,
+          date: new Intl.DateTimeFormat("vi-VN", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          }).format(new Date(result.date)),
+          balls: balls,
+          chips: balls.map((num) => frequencyMap[num] || 0), // Số lần xuất hiện sau kỳ hiện tại
+        };
+      });
       isLoading.value = false;
+      totalCurrentPeriods.value = listBalls.value.length;
     }
 
     function updateDrawPeriodValue(value: number) {
@@ -180,6 +262,7 @@ export default defineComponent({
       controlHeight,
       bgColor,
       textColor,
+      totalCurrentPeriods,
     };
   },
 });
