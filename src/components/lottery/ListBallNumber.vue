@@ -106,6 +106,6 @@ export default defineComponent({
   position: relative;
   background-color: rgb(62 151 255);
   float: left;
-  font-size: small;
+  font-size: x-small;
 }
 </style>

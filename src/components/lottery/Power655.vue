@@ -67,12 +67,40 @@
             @click="isLoading = true"
           />
         </div>
+        <div class="col-12 m-1">
+          <div class="row">
+            <div class="col-3">
+              <el-button
+                class="btn btn-sm btn-primary justify-content-center align-items-center fw-bold"
+                data-bs-toggle="modal"
+                data-bs-target="#myModal"
+              >
+                <el-icon
+                  v-tooltip
+                  title="Xem số ra nhiều"
+                  size="20"
+                  color="#000"
+                  class="el-icon--center"
+                  ><TrendCharts /></el-icon
+              ></el-button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- Loading Mask -->
     <div v-if="isLoading" class="loading-mask">
       <div class="spinner"></div>
     </div>
+    <!-- FullScreenModal component -->
+    <full-screen-modal modal-id="myModal" title="My Fullscreen Modal">
+      <template #body>
+        <p>This is the content of the fullscreen modal.</p>
+      </template>
+      <template #footer>
+        <button class="btn btn-primary">Save Changes</button>
+      </template>
+    </full-screen-modal>
     <div
       class="div-result row m-1 d-flex"
       :style="{ marginTop: `${controlHeight}px !important` }"
@@ -107,7 +135,8 @@ import DrawPeriodSelect from "./DrawPeriodSelect.vue";
 import ListBallNumber from "./ListBallNumber.vue";
 import SearchButton from "./SearchButton.vue";
 import { t } from "@/core/helpers/i18n";
-
+import { TrendCharts } from "@element-plus/icons-vue";
+import FullScreenModal from "./FullScreenModal.vue";
 export default defineComponent({
   name: "Power-655",
   components: {
@@ -115,6 +144,8 @@ export default defineComponent({
     ListBallNumber,
     DrawPeriodSelect,
     SearchButton,
+    TrendCharts,
+    FullScreenModal,
   },
   props: {
     msg: String,
@@ -133,64 +164,6 @@ export default defineComponent({
     }
     provide("totalCurrentPeriods", totalCurrentPeriods);
     function updateListBalls(results: any[]) {
-      // listBalls.value = results.map((result) => ({
-      //   drawId: result.drawId,
-      //   date: new Date(result.date).toLocaleDateString("vi-VN"),
-      //   balls: result.wns.split(",").map((item: string) => parseInt(item)),
-      //   chips: result.wns.split(",").map((item: string) => parseInt(item)),
-      // }));
-
-      // Thống kê số lần xuất hiện của tất cả các số
-      //const frequencyMap: Record<number, number> = {};
-
-      // Duyệt qua tất cả các "wns" để tính tần suất
-      // results.forEach((result) => {
-      //   const numbers = result.wns
-      //     .split(",")
-      //     .map((item: string) => parseInt(item));
-      //   numbers.forEach((num) => {
-      //     frequencyMap[num] = (frequencyMap[num] || 0) + 1;
-      //   });
-      // });
-
-      // Tạo danh sách balls và thêm chips
-      // listBalls.value = results.map((result) => {
-      //   const balls = result.wns
-      //     .split(",")
-      //     .map((item: string) => parseInt(item));
-
-      //   return {
-      //     drawId: result.drawId,
-      //     date: new Date(result.date).toLocaleDateString("vi-VN"),
-      //     balls: balls,
-      //     chips: balls.map((num) => frequencyMap[num]), // Tần suất xuất hiện từng số
-      //   };
-      // });
-
-      // listBalls.value = results.map((result, index) => {
-      //   const balls = result.wns
-      //     .split(",")
-      //     .map((item: string) => parseInt(item));
-
-      //   // Thống kê tần suất chỉ từ các kỳ trước đó (index nhỏ hơn hiện tại)
-      //   const frequencyMap: Record<number, number> = {};
-      //   results.slice(0, index).forEach((prevResult) => {
-      //     const prevBalls = prevResult.wns
-      //       .split(",")
-      //       .map((item: string) => parseInt(item));
-      //     prevBalls.forEach((num) => {
-      //       frequencyMap[num] = (frequencyMap[num] || 0) + 1;
-      //     });
-      //   });
-
-      //   return {
-      //     drawId: result.drawId,
-      //     date: new Date(result.date).toLocaleDateString("vi-VN"),
-      //     balls: balls,
-      //     chips: balls.map((num) => frequencyMap[num] || 0), // Số lần xuất hiện trước kỳ hiện tại
-      //   };
-      // });
-
       listBalls.value = results.map((result, index) => {
         const balls = result.wns
           .split(",")
