@@ -71,18 +71,16 @@
           <div class="row">
             <div class="col-3">
               <el-button
-                class="btn btn-sm btn-primary justify-content-center align-items-center fw-bold"
-                data-bs-toggle="modal"
-                data-bs-target="#myModal"
+                class="btn btn-sm btn-primary fw-bold d-flex align-items-center"
+                @click="openModal('TrendChart', 'POWER655 - THỐNG KÊ SỐ TRÚNG')"
               >
                 <el-icon
-                  v-tooltip
-                  title="Xem số ra nhiều"
                   size="20"
                   color="#000"
-                  class="el-icon--center"
+                  class="el-icon--left d-flex align-items-center"
                   ><TrendCharts /></el-icon
-              ></el-button>
+                >Thống kê số trúng</el-button
+              >
             </div>
           </div>
         </div>
@@ -92,15 +90,11 @@
     <div v-if="isLoading" class="loading-mask">
       <div class="spinner"></div>
     </div>
-    <!-- FullScreenModal component -->
-    <full-screen-modal modal-id="myModal" title="My Fullscreen Modal">
-      <template #body>
-        <p>This is the content of the fullscreen modal.</p>
-      </template>
-      <template #footer>
-        <button class="btn btn-primary">Save Changes</button>
-      </template>
-    </full-screen-modal>
+    <FullScreenModal
+      :modalId="'myModal'"
+      :title="modalTitle"
+      :initialComponent="selectedComponent"
+    />
     <div
       class="div-result row m-1 d-flex"
       :style="{ marginTop: `${controlHeight}px !important` }"
@@ -137,6 +131,7 @@ import SearchButton from "./SearchButton.vue";
 import { t } from "@/core/helpers/i18n";
 import { TrendCharts } from "@element-plus/icons-vue";
 import FullScreenModal from "./FullScreenModal.vue";
+import * as bootstrap from "bootstrap";
 export default defineComponent({
   name: "Power-655",
   components: {
@@ -162,6 +157,18 @@ export default defineComponent({
     function toggleSelection(isPeriod: boolean) {
       isPeriodSelected.value = isPeriod;
     }
+    const selectedComponent = ref("");
+    const modalTitle = ref("Dynamic Modal");
+    const openModal = (componentName: string, title: string) => {
+      selectedComponent.value = componentName;
+      modalTitle.value = title;
+      // Trigger modal manually with Bootstrap's Modal API
+      const modalElement = document.getElementById("myModal");
+      if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+      }
+    };
     provide("totalCurrentPeriods", totalCurrentPeriods);
     function updateListBalls(results: any[]) {
       listBalls.value = results.map((result, index) => {
@@ -236,6 +243,9 @@ export default defineComponent({
       bgColor,
       textColor,
       totalCurrentPeriods,
+      selectedComponent,
+      modalTitle,
+      openModal,
     };
   },
 });

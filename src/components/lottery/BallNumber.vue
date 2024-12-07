@@ -26,6 +26,10 @@ export default defineComponent({
       required: true,
       validator: (value: string) => ["red", "yellow"].includes(value),
     },
+    isStatTitle: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     const drawId = inject("drawId", ref(""));
@@ -33,11 +37,13 @@ export default defineComponent({
     const indexPeriod = inject("indexPeriod", ref(0));
     const ballColor = computed(() => props.color);
     const titleChip = computed(() => {
-      return `Đã xuất hiện ${props.chipNumber} lần trong ${
-        totalCurrentPeriods.value - (indexPeriod.value - 1)
-      } kỳ quay gần nhất (#0${drawId.value} -> #0${
-        +drawId.value - (totalCurrentPeriods.value - indexPeriod.value)
-      })`;
+      return !props.isStatTitle
+        ? `Đã xuất hiện ${props.chipNumber} lần trong ${
+            totalCurrentPeriods.value - (indexPeriod.value - 1)
+          } kỳ quay gần nhất (#0${drawId.value} -> #0${
+            +drawId.value - (totalCurrentPeriods.value - indexPeriod.value)
+          })`
+        : `Đã xuất hiện ${props.chipNumber} lần`;
     });
     const formattedNumber = computed(() =>
       props.ballNumber.toString().padStart(2, "0")
