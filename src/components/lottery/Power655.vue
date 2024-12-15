@@ -46,13 +46,13 @@
         </div>
         <div
           v-if="!isPeriodSelected"
-          class="col-10 col-sm-11 col-md-5 col-lg-4 col-xl-3 col-xxl-2 my-1 d-flex align-items-center"
+          class="col-10 col-sm-11 col-md-5 col-lg-4 col-xl-4 col-xxl-3 my-1 d-flex align-items-center"
         >
           <DateRangePicker v-model:parentValue="selectedDate" />
         </div>
         <div
           v-else
-          class="col-10 col-sm-11 col-md-5 col-lg-4 col-xl-3 col-xxl-2 my-1 d-flex align-items-center"
+          class="col-10 col-sm-11 col-md-5 col-lg-4 col-xl-4 col-xxl-3 my-1 d-flex align-items-center"
         >
           <DrawPeriodSelect
             @update:drawPeriodValue="updateDrawPeriodValue"
