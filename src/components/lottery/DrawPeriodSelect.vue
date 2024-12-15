@@ -11,13 +11,13 @@
         allow-create
         default-first-option
         class="boxrd"
-        v-model="drawPeriodValue"
+        v-model="drawPeriodStore.drawPeriodValue"
         placeholder="Select"
         @change="handleChange"
         @keypress="blockNonNumeric"
       >
         <el-option
-          v-for="item in drawPeriodOptions"
+          v-for="item in drawPeriodStore.drawPeriodOptions"
           :key="item.value"
           :label="item.label"
           :value="item.value"
@@ -28,50 +28,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-//import { useI18n } from "vue-i18n";
+import { defineComponent } from "vue";
+import { useDrawPeriodStore } from "@/stores/drawPeriodStore";
 import { t } from "@/core/helpers/i18n";
 
 export default defineComponent({
   name: "DrawPeriodSelect",
-  emits: ["update:drawPeriodValue"],
-  setup(_, { emit }) {
-    const drawPeriodOptions = ref(
-      [
-        5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90,
-        95, 100, 744,
-      ].map((item) => ({
-        value: item,
-        label: item.toString(),
-      }))
-    );
+  setup() {
+    const drawPeriodStore = useDrawPeriodStore();
 
-    const drawPeriodValue = ref(drawPeriodOptions.value[0].value);
     function handleChange(value: string | number) {
       const numericValue = parseInt(value as string, 10);
-      if (isNaN(numericValue)) {
-        drawPeriodValue.value = drawPeriodOptions.value[0].value;
-        return;
-      }
-
-      if (numericValue > 10000) {
-        drawPeriodValue.value = 1000;
-      } else {
-        drawPeriodValue.value = numericValue;
-        if (
-          !drawPeriodOptions.value.some(
-            (option) => option.value === numericValue
-          )
-        ) {
-          drawPeriodOptions.value.push({
-            value: numericValue,
-            label: numericValue.toString(),
-          });
-        }
-      }
-
-      emit("update:drawPeriodValue", drawPeriodValue.value);
+      drawPeriodStore.updateDrawPeriodValue(numericValue);
     }
+
     function blockNonNumeric(event: KeyboardEvent) {
       const allowedKeys = ["Backspace", "Tab", "ArrowLeft", "ArrowRight"];
       const isNumberKey = /^[0-9]$/.test(event.key);
@@ -81,8 +51,7 @@ export default defineComponent({
     }
 
     return {
-      drawPeriodValue,
-      drawPeriodOptions,
+      drawPeriodStore,
       handleChange,
       blockNonNumeric,
       t,
