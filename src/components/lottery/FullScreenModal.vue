@@ -17,6 +17,7 @@
         <div class="modal-body">
           <!-- Render the selected component dynamically -->
           <component
+            :key="componentKey"
             :is="currentComponent ? components[currentComponent] : null"
           />
         </div>
@@ -38,7 +39,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, defineAsyncComponent } from "vue";
+import {
+  defineComponent,
+  ref,
+  watch,
+  defineAsyncComponent,
+  onMounted,
+  onBeforeUnmount,
+} from "vue";
 
 export default defineComponent({
   name: "FullScreenModal",
@@ -60,7 +68,7 @@ export default defineComponent({
   },
   setup(props) {
     const currentComponent = ref(props.initialComponent);
-
+    const componentKey = ref(Date.now()); // Unique key for re-rendering
     // Define components dynamically, relative to the same folder
     const components = {
       RaceChart: defineAsyncComponent(() => import("./RaceChart.vue")),
@@ -72,12 +80,33 @@ export default defineComponent({
       () => props.initialComponent,
       (newVal) => {
         currentComponent.value = newVal;
+        componentKey.value += 1; // Thay đổi key để tái tạo component
       }
     );
+
+    const handleModalHidden = () => {
+      componentKey.value = Date.now(); // Change key to force re-render
+      currentComponent.value = "";
+    };
+
+    onMounted(() => {
+      const modalElement = document.getElementById(props.modalId);
+      if (modalElement) {
+        modalElement.addEventListener("hidden.bs.modal", handleModalHidden);
+      }
+    });
+
+    onBeforeUnmount(() => {
+      const modalElement = document.getElementById(props.modalId);
+      if (modalElement) {
+        modalElement.removeEventListener("hidden.bs.modal", handleModalHidden);
+      }
+    });
 
     return {
       components,
       currentComponent,
+      componentKey,
     };
   },
 });
