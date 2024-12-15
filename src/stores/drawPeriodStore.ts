@@ -1,34 +1,30 @@
 import { defineStore } from "pinia";
+import axios from "axios";
+import { API_ENDPOINTS } from "@/config/api";
 
-export const useDrawPeriodStore = defineStore("drawPeriod", {
+export const useDrawPeriodStore = defineStore("drawPeriodStore", {
   state: () => ({
-    drawPeriodValue: 5, // Giá trị mặc định
-    drawPeriodOptions: [
-      5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95,
-      100, 744,
-    ].map((item) => ({
-      value: item,
-      label: item.toString(),
-    })),
+    selectedQuantity: 5, // Giá trị mặc định
+    results: [] as any[], // Kết quả trả về từ API
+    isLoading: false,
   }),
   actions: {
-    updateDrawPeriodValue(value: number) {
-      if (isNaN(value)) {
-        this.drawPeriodValue = this.drawPeriodOptions[0].value;
-        return;
-      }
-
-      if (value > 10000) {
-        this.drawPeriodValue = 1000;
-      } else {
-        this.drawPeriodValue = value;
-        const exists = this.drawPeriodOptions.some(
-          (option) => option.value === value
+    async fetchResults() {
+      this.isLoading = true;
+      try {
+        const response = await axios.get(
+          `${API_ENDPOINTS.POWER655.GET_LAST_RESULT(this.selectedQuantity)}`
         );
-        if (!exists) {
-          this.drawPeriodOptions.push({ value, label: value.toString() });
-        }
+        this.results = response.data;
+      } catch (error) {
+        console.error("Error fetching results:", error);
+        this.results = [];
+      } finally {
+        this.isLoading = false;
       }
+    },
+    setSelectedQuantity(quantity: number) {
+      this.selectedQuantity = quantity;
     },
   },
 });

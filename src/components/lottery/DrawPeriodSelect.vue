@@ -11,13 +11,13 @@
         allow-create
         default-first-option
         class="boxrd"
-        v-model="drawPeriodStore.drawPeriodValue"
+        v-model="store.selectedQuantity"
         placeholder="Select"
         @change="handleChange"
         @keypress="blockNonNumeric"
       >
         <el-option
-          v-for="item in drawPeriodStore.drawPeriodOptions"
+          v-for="item in drawPeriodOptions"
           :key="item.value"
           :label="item.label"
           :value="item.value"
@@ -28,18 +28,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useDrawPeriodStore } from "@/stores/drawPeriodStore";
 import { t } from "@/core/helpers/i18n";
 
 export default defineComponent({
   name: "DrawPeriodSelect",
   setup() {
-    const drawPeriodStore = useDrawPeriodStore();
+    const store = useDrawPeriodStore();
 
-    function handleChange(value: string | number) {
-      const numericValue = parseInt(value as string, 10);
-      drawPeriodStore.updateDrawPeriodValue(numericValue);
+    const drawPeriodOptions = ref(
+      [
+        5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90,
+        95, 100, 744,
+      ].map((item) => ({
+        value: item,
+        label: item.toString(),
+      }))
+    );
+
+    function handleChange(value: number) {
+      store.setSelectedQuantity(value);
     }
 
     function blockNonNumeric(event: KeyboardEvent) {
@@ -51,7 +60,8 @@ export default defineComponent({
     }
 
     return {
-      drawPeriodStore,
+      store,
+      drawPeriodOptions,
       handleChange,
       blockNonNumeric,
       t,
@@ -59,15 +69,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.boxrd {
-  border-radius: 0 0.475rem 0.475rem 0 !important;
-  border: 1px solid var(--bs-gray-300);
-}
-:deep(.el-select__wrapper) {
-  background-color: transparent !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-</style>
