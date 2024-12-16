@@ -1,6 +1,6 @@
 <template>
   <div class="w-100">
-    <h1>{{ msg }}</h1>
+    <h1>Power655</h1>
     <div
       ref="controlRef"
       class="sticky-control"
@@ -20,7 +20,7 @@
                 type="radio"
                 name="Int"
                 value="btnIntYes"
-                :checked="isPeriodSelected"
+                :checked="lotteryStore.isPeriodSelected"
                 class="form-check-input"
                 @click="toggleSelection(true)"
               /><label
@@ -35,7 +35,7 @@
                 type="radio"
                 name="Int"
                 value="btnIntNo"
-                :checked="!isPeriodSelected"
+                :checked="!lotteryStore.isPeriodSelected"
                 class="form-check-input"
                 @click="toggleSelection(false)"
               /><label class="fs-7" :style="{ color: textColor }" for="btnIntNo"
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div
-          v-if="!isPeriodSelected"
+          v-if="!lotteryStore.isPeriodSelected"
           class="col-10 col-sm-11 col-md-5 col-lg-4 col-xl-4 col-xxl-3 my-1 d-flex align-items-center"
         >
           <DateRangePicker v-model:parentValue="selectedDate" />
@@ -55,16 +55,15 @@
           class="col-10 col-sm-11 col-md-5 col-lg-4 col-xl-4 col-xxl-3 my-1 d-flex align-items-center"
         >
           <DrawPeriodSelect
-            @update:drawPeriodValue="updateDrawPeriodValue"
+            :v-model="lotteryStore.drawPeriodValue"
+            @change="lotteryStore.setDrawPeriodValue"
           ></DrawPeriodSelect>
         </div>
         <div class="col-2 col-sm-1 col-md-1 col-lg-1 col-xl-1 my-1">
           <SearchButton
             id="search-button"
-            @search-results="updateListBalls"
-            :quantity="drawPeriodValue"
-            :isLoading="isLoading"
-            @click="isLoading = true"
+            :isLoading="lotteryStore.isLoading"
+            @click="lotteryStore.fetchPower655Results"
           />
         </div>
         <div class="col-12 m-1">
@@ -87,7 +86,7 @@
       </div>
     </div>
     <!-- Loading Mask -->
-    <div v-if="isLoading" class="loading-mask">
+    <div v-if="lotteryStore.isLoading" class="loading-mask">
       <div class="spinner"></div>
     </div>
     <FullScreenModal
@@ -101,7 +100,7 @@
     >
       <div class="col-12 col-md-6 col-lg-4 my-1">
         <ListBallNumber
-          v-for="(result, index) in listBalls"
+          v-for="(result, index) in lotteryStore.getPower655StatHistories"
           class="my-1"
           :key="index"
           :index="index + 1"
@@ -117,21 +116,19 @@
 </template>
 
 <script lang="ts">
-interface Ball {
-  drawId: number;
-  date: string;
-  balls: number[];
-  chips: number[];
-}
-import { defineComponent, ref, onMounted, computed, provide } from "vue";
+import { defineComponent, ref, onMounted, computed } from "vue";
+import { useLotteryStore } from "@/stores/lottery";
 import DateRangePicker from "./DateRangePicker.vue";
 import DrawPeriodSelect from "./DrawPeriodSelect.vue";
 import ListBallNumber from "./ListBallNumber.vue";
 import SearchButton from "./SearchButton.vue";
 import { t } from "@/core/helpers/i18n";
 import { TrendCharts } from "@element-plus/icons-vue";
+const selectedComponent = ref("");
+const modalTitle = ref("Dynamic Modal");
 import FullScreenModal from "./FullScreenModal.vue";
 import * as bootstrap from "bootstrap";
+
 export default defineComponent({
   name: "Power-655",
   components: {
@@ -142,23 +139,16 @@ export default defineComponent({
     TrendCharts,
     FullScreenModal,
   },
-  props: {
-    msg: String,
-  },
   setup() {
-    const isLoading = ref(false);
-    const isPeriodSelected = ref(true);
-    const drawPeriodValue = ref(5);
-    const listBalls = ref<Ball[]>([]);
+    const lotteryStore = useLotteryStore();
     const selectedDate = ref([new Date(), new Date()]);
     const controlRef = ref<HTMLElement | null>(null);
     const controlHeight = ref(0);
-    const totalCurrentPeriods = ref(0);
+
     function toggleSelection(isPeriod: boolean) {
-      isPeriodSelected.value = isPeriod;
+      lotteryStore.setIsPeriodSelected(isPeriod);
     }
-    const selectedComponent = ref("");
-    const modalTitle = ref("Dynamic Modal");
+
     const openModal = (componentName: string, title: string) => {
       selectedComponent.value = componentName;
       modalTitle.value = title;
@@ -169,50 +159,13 @@ export default defineComponent({
         modal.show();
       }
     };
-    provide("totalCurrentPeriods", totalCurrentPeriods);
-    function updateListBalls(results: any[]) {
-      listBalls.value = results.map((result, index) => {
-        const balls = result.wns
-          .split(",")
-          .map((item: string) => parseInt(item))
-          .slice(0, -1);
 
-        // Thống kê tần suất từ các kỳ sau (index lớn hơn hiện tại)
-        const frequencyMap: Record<number, number> = {};
-        results.slice(index).forEach((nextResult) => {
-          const nextBalls = nextResult.wns
-            .split(",")
-            .map((item: string) => parseInt(item))
-            .slice(0, -1);
-          nextBalls.forEach((num) => {
-            frequencyMap[num] = (frequencyMap[num] || 0) + 1;
-          });
-        });
-
-        return {
-          drawId: result.drawId,
-          date: new Intl.DateTimeFormat("vi-VN", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          }).format(new Date(result.date)),
-          balls: balls,
-          chips: balls.map((num) => frequencyMap[num] || 0), // Số lần xuất hiện sau kỳ hiện tại
-        };
-      });
-      isLoading.value = false;
-      totalCurrentPeriods.value = listBalls.value.length;
-    }
-
-    function updateDrawPeriodValue(value: number) {
-      drawPeriodValue.value = value;
-      isLoading.value = true;
-    }
     const updateControlHeight = () => {
       if (controlRef.value) {
         controlHeight.value = controlRef.value.offsetHeight;
       }
     };
+
     onMounted(() => {
       updateControlHeight();
       window.addEventListener("resize", updateControlHeight);
@@ -228,24 +181,19 @@ export default defineComponent({
         ? "#fff"
         : "#000";
     });
+
     return {
       t,
-      isLoading,
-      listBalls,
-      isPeriodSelected,
+      lotteryStore,
       selectedDate,
-      drawPeriodValue,
       toggleSelection,
-      updateListBalls,
-      updateDrawPeriodValue,
+      openModal,
       controlRef,
       controlHeight,
       bgColor,
       textColor,
-      totalCurrentPeriods,
-      selectedComponent,
       modalTitle,
-      openModal,
+      selectedComponent,
     };
   },
 });

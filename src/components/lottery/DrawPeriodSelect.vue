@@ -11,9 +11,8 @@
         allow-create
         default-first-option
         class="boxrd"
-        v-model="store.selectedQuantity"
-        placeholder="Select"
-        @change="handleChange"
+        v-model="localValue"
+        :placeholder="t('selectPlaceholder')"
         @keypress="blockNonNumeric"
       >
         <el-option
@@ -28,15 +27,36 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { useDrawPeriodStore } from "@/stores/drawPeriodStore";
+import { defineComponent, ref, watch } from "vue";
 import { t } from "@/core/helpers/i18n";
 
 export default defineComponent({
   name: "DrawPeriodSelect",
-  setup() {
-    const store = useDrawPeriodStore();
+  props: {
+    modelValue: {
+      type: Number,
+      required: true,
+    },
+  },
+  emits: ["update:modelValue"],
+  setup(props, { emit }) {
+    // Local state to manage the dropdown value
+    const localValue = ref(props.modelValue);
 
+    // Watch for changes in localValue and emit to the parent
+    watch(localValue, (newValue) => {
+      emit("update:modelValue", newValue);
+    });
+
+    // Watch for external prop updates and sync with localValue
+    watch(
+      () => props.modelValue,
+      (newValue) => {
+        localValue.value = newValue;
+      }
+    );
+
+    // Dropdown options
     const drawPeriodOptions = ref(
       [
         5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90,
@@ -47,10 +67,7 @@ export default defineComponent({
       }))
     );
 
-    function handleChange(value: number) {
-      store.setSelectedQuantity(value);
-    }
-
+    // Prevent non-numeric input
     function blockNonNumeric(event: KeyboardEvent) {
       const allowedKeys = ["Backspace", "Tab", "ArrowLeft", "ArrowRight"];
       const isNumberKey = /^[0-9]$/.test(event.key);
@@ -60,9 +77,8 @@ export default defineComponent({
     }
 
     return {
-      store,
+      localValue,
       drawPeriodOptions,
-      handleChange,
       blockNonNumeric,
       t,
     };
