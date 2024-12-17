@@ -15,6 +15,9 @@ export const useLotteryStore = defineStore("lotteryStore", {
   getters: {
     getPower655StatHistories(state): Ball[] {
       return state.power655Results.map((result, index) => {
+        const totalBalls = result.wns
+          .split(",")
+          .map((item: string) => parseInt(item));
         const balls = result.wns
           .split(",")
           .map((item: string) => parseInt(item))
@@ -38,8 +41,8 @@ export const useLotteryStore = defineStore("lotteryStore", {
             month: "2-digit",
             year: "numeric",
           }).format(new Date(result.date)),
-          balls: balls,
-          chips: balls.map((num) => frequencyMap[num] || 0),
+          balls: totalBalls,
+          chips: totalBalls.map((num) => frequencyMap[num] || 0),
         } as Ball;
       });
     },
@@ -57,6 +60,9 @@ export const useLotteryStore = defineStore("lotteryStore", {
     setListBalls(Power655Results: Power655Record[]) {
       this.power655Results = Power655Results;
     },
+    setTotalCurrentPeriods(total: number) {
+      this.totalCurrentPeriods = total;
+    },
     async fetchPower655Results() {
       this.isLoading = true;
       try {
@@ -65,7 +71,8 @@ export const useLotteryStore = defineStore("lotteryStore", {
         );
         const results: Power655Record[] = response.data;
         this.setListBalls(results);
-        this.totalCurrentPeriods = this.listBalls.length;
+        this.setTotalCurrentPeriods(results.length);
+        //console.log("totalCurrentPeriods:", this.totalCurrentPeriods);
       } catch (error) {
         console.error("Error fetchPower655Results:", error);
         this.setListBalls([]);

@@ -55,9 +55,9 @@
           class="col-10 col-sm-11 col-md-5 col-lg-4 col-xl-4 col-xxl-3 my-1 d-flex align-items-center"
         >
           <DrawPeriodSelect
-            :v-model="lotteryStore.drawPeriodValue"
-            @change="lotteryStore.setDrawPeriodValue"
-          ></DrawPeriodSelect>
+            v-model="lotteryStore.drawPeriodValue"
+            @update:modelValue="lotteryStore.fetchPower655Results"
+          />
         </div>
         <div class="col-2 col-sm-1 col-md-1 col-lg-1 col-xl-1 my-1">
           <SearchButton
@@ -116,7 +116,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from "vue";
+import { defineComponent, ref, onMounted, computed, provide } from "vue";
 import { useLotteryStore } from "@/stores/lottery";
 import DateRangePicker from "./DateRangePicker.vue";
 import DrawPeriodSelect from "./DrawPeriodSelect.vue";
@@ -144,7 +144,7 @@ export default defineComponent({
     const selectedDate = ref([new Date(), new Date()]);
     const controlRef = ref<HTMLElement | null>(null);
     const controlHeight = ref(0);
-
+    provide("totalCurrentPeriods", ref(lotteryStore.totalCurrentPeriods));
     function toggleSelection(isPeriod: boolean) {
       lotteryStore.setIsPeriodSelected(isPeriod);
     }

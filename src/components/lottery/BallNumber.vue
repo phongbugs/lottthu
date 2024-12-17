@@ -1,7 +1,7 @@
 <template>
   <div :class="['ball', ballColor]">
     <span class="number fs-4">{{ formattedNumber }}</span>
-    <div v-tooltip :title="titleChip" class="chip pointer">
+    <div v-if="isVisibleChip" v-tooltip :title="titleChip" class="chip pointer">
       {{ chipNumber }}
     </div>
   </div>
@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, inject, ref } from "vue";
+import { useLotteryStore } from "@/stores/lottery";
 
 export default defineComponent({
   name: "BallNumber",
@@ -30,10 +31,17 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    isVisibleChip: {
+      type: Boolean,
+      default: true,
+    },
   },
   setup(props) {
     const drawId = inject("drawId", ref(""));
-    const totalCurrentPeriods = inject("totalCurrentPeriods", ref(0));
+    const lotteryStore = useLotteryStore();
+    const totalCurrentPeriods = computed(
+      () => lotteryStore.totalCurrentPeriods
+    );
     const indexPeriod = inject("indexPeriod", ref(0));
     const ballColor = computed(() => props.color);
     const titleChip = computed(() => {

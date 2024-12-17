@@ -12,7 +12,6 @@
         default-first-option
         class="boxrd"
         v-model="localValue"
-        :placeholder="t('selectPlaceholder')"
         @keypress="blockNonNumeric"
       >
         <el-option

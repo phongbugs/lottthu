@@ -30,6 +30,7 @@
         :key="ball"
         :ball-number="ball"
         :chip-number="chips[index]"
+        :is-visible-chip="index < balls.length - 1"
         :color="index === balls.length - 1 ? 'red' : 'yellow'"
       />
     </div>
