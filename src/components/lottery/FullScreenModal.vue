@@ -4,7 +4,7 @@
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
-          <h5 class="modal-title">{{ title }}</h5>
+          <h5 class="modal-title text-center">{{ title }}</h5>
           <button
             type="button"
             class="btn-close"
@@ -14,7 +14,7 @@
         </div>
 
         <!-- Modal Body -->
-        <div class="modal-body">
+        <div class="modal-body my-3">
           <!-- Render the selected component dynamically -->
           <component
             :key="componentKey"
@@ -85,8 +85,8 @@ export default defineComponent({
     );
 
     const handleModalHidden = () => {
-      componentKey.value = Date.now(); // Change key to force re-render
-      currentComponent.value = "";
+      //componentKey.value = Date.now(); // Change key to force re-render
+      //currentComponent.value = "";
     };
 
     onMounted(() => {

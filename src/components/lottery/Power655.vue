@@ -1,6 +1,6 @@
 <template>
   <div class="w-100">
-    <h1>Power655</h1>
+    <!-- <h1>Power655</h1> -->
     <div
       ref="controlRef"
       class="sticky-control"
@@ -70,8 +70,14 @@
           <div class="row">
             <div class="col-3">
               <el-button
+                :disabled="lotteryStore.totalCurrentPeriods === 0"
                 class="btn btn-sm btn-primary fw-bold d-flex align-items-center"
-                @click="openModal('TrendChart', 'POWER655 - THỐNG KÊ SỐ TRÚNG')"
+                @click="
+                  openModal(
+                    'TrendChart',
+                    `POWER655 - THỐNG KÊ SỐ TRÚNG ${lotteryStore.totalCurrentPeriods} KỲ QUAY GẦN NHẤT`
+                  )
+                "
               >
                 <el-icon
                   size="20"

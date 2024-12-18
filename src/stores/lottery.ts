@@ -5,7 +5,7 @@ import { API_ENDPOINTS } from "@/config/api";
 
 export const useLotteryStore = defineStore("lotteryStore", {
   state: () => ({
-    drawPeriodValue: 5,
+    drawPeriodValue: 0,
     listBalls: [] as Ball[],
     power655Results: [] as Power655Record[],
     isPeriodSelected: true,
@@ -45,6 +45,18 @@ export const useLotteryStore = defineStore("lotteryStore", {
           chips: totalBalls.map((num) => frequencyMap[num] || 0),
         } as Ball;
       });
+    },
+    getWinNumberStat(state): WinNumberStat {
+      const numberCounts = state.power655Results
+        .flatMap((record) => record.wns.split(",").map(Number)) // Chuyển "wns" thành mảng số
+        .reduce<Record<number, number>>((acc, num) => {
+          acc[num] = (acc[num] || 0) + 1; // Đếm số lần xuất hiện
+          return acc;
+        }, {});
+
+      const wns = Object.keys(numberCounts).map(Number); // Lấy danh sách số (keys)
+      const counts = Object.values(numberCounts); // Lấy danh sách số lần xuất hiện (values)
+      return { wns, counts };
     },
   },
   actions: {
@@ -97,4 +109,8 @@ interface Power655Record {
   wns: string;
   jackpot1: string;
   jackpot2: string;
+}
+interface WinNumberStat {
+  wns: number[];
+  counts: number[];
 }
