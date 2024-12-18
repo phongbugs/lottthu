@@ -1,5 +1,5 @@
 <template>
-  <div class="input-group input-group-sm" style="min-width: 319px">
+  <div class="input-group input-group-sm" style="min-width: 289px">
     <span class="input-group-text fw-bold fs-7">{{
       t("lastestDrawPeriods")
     }}</span>
@@ -84,3 +84,14 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.boxrd {
+  border-radius: 0 0.475rem 0.475rem 0 !important;
+  border: 1px solid var(--bs-gray-300);
+}
+:deep(.el-select__wrapper) {
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+</style>
